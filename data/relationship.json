@@ -1,0 +1,151 @@
+{
+  "name": "中国高铁全车型技术谱系",
+  "children": [
+    {
+      "name": "庞巴迪系",
+      "tech_source": "Regina/Zefiro平台",
+      "children": [
+        {
+          "name": "CRH1系列",
+          "children": [
+            {"name": "CRH1A", "type": "标准型"},
+            {"name": "CRH1B", "type": "长编组型"},
+            {"name": "CRH1E", "type": "卧铺型"},
+            {"name": "CRH1A-A", "type": "统型化改进"}
+          ]
+        },
+        {
+          "name": "CRH380D",
+          "tech_source": "Zefiro 380平台"
+        },
+        {
+          "name": "城际衍生系",
+          "children": [
+            {"name": "CRH6A", "type": "城际标准型"},
+            {"name": "CRH6A-A", "type": "小编组城际型"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "新干线系",
+      "tech_source": "E2-1000平台",
+      "children": [
+        {
+          "name": "CRH2系列",
+          "children": [
+            {"name": "CRH2A", "type": "基础型"},
+            {"name": "CRH2B", "type": "长编组型"},
+            {"name": "CRH2C", "type": "提速试验型"},
+            {"name": "CRH2E", "type": "卧铺型"},
+            {"name": "CRH2G", "type": "高寒抗风沙型"},
+            {
+              "name": "检测车型",
+              "children": [
+                {"name": "CRH2J", "type": "综合检测车"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "CRH380A系列",
+          "tech_source": "自主升级版",
+          "children": [
+            {"name": "CRH380A", "type": "标准型"},
+            {"name": "CRH380AL", "type": "长编组型"},
+            {"name": "CRH380AN", "type": "高寒型"},
+            {"name": "CRH380AJ", "type": "检测车型"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "西门子系",
+      "tech_source": "Velaro平台",
+      "children": [
+        {
+          "name": "CRH3系列",
+          "children": [
+            {"name": "CRH3C", "type": "原型车"},
+            {"name": "CRH3A", "type": "城际改进型"},
+            {"name": "CRH3A-A", "type": "统型化改进"}
+          ]
+        },
+        {
+          "name": "CRH380B系列",
+          "children": [
+            {"name": "CRH380B", "type": "标准型"},
+            {"name": "CRH380BL", "type": "长编组型"},
+            {"name": "CRH380BG", "type": "高寒型"},
+            {"name": "CRH380BJ", "type": "检测车型"}
+          ]
+        },
+        {
+          "name": "CRH380CL",
+          "tech_source": "Velaro+新干线技术融合"
+        }
+      ]
+    },
+    {
+      "name": "阿尔斯通系",
+      "tech_source": "Pendolino平台",
+      "children": [
+        {
+          "name": "CRH5系列",
+          "children": [
+            {"name": "CRH5A", "type": "标准型"},
+            {"name": "CRH5G", "type": "高寒型"},
+            {"name": "CRH5E", "type": "卧铺型"},
+            {"name": "CRH5J", "type": "检测车型"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "自主创新系",
+      "tech_source": "技术消化吸收",
+      "children": [
+        {
+          "name": "CR300系列",
+          "children": [
+            {"name": "CR300AF", "type": "四方平台"},
+            {"name": "CR300BF", "type": "长客平台"}
+          ]
+        },
+        {
+          "name": "CR400系列",
+          "children": [
+            {
+              "name": "CR400AF家族",
+              "children": [
+                {"name": "CR400AF", "type": "基础型"},
+                {"name": "CR400AF-A/B/C", "type": "编组扩展型"},
+                {"name": "CR400AF-Z", "type": "智能型"},
+                {"name": "CR400AF-AE", "type": "卧铺型"},
+                {"name": "CR400AF-J", "type": "检测车型"}
+              ]
+            },
+            {
+              "name": "CR400BF家族",
+              "children": [
+                {"name": "CR400BF", "type": "基础型"},
+                {"name": "CR400BF-A/B/C", "type": "编组扩展型"},
+                {"name": "CR400BF-Z", "type": "智能型"},
+                {"name": "CR400BF-G", "type": "高寒型"},
+                {"name": "CR400BF-J", "type": "检测车型"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "特殊车型",
+          "children": [
+            {"name": "CR200J", "tech_source": "动力集中式"},
+            {"name": "CJ6", "tech_source": "城际专用平台"},
+            {"name": "CRH380AM", "tech_source": "试验型超高速"}
+          ]
+        }
+      ]
+    }
+  ]
+}

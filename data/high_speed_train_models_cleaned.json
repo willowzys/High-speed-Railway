@@ -1,0 +1,335 @@
+[
+  {
+    "model": "CRH1A",
+    "nickname": "大地铁",
+    "max_speed": 250,
+    "car_config": "8编组",
+    "service_year": 2007,
+    "main_lines": "广深线、沪昆线",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH1A%E5%9E%8B%E5%88%97%E8%BD%A6/16367949"
+  },
+  {
+    "model": "CRH1B",
+    "nickname": "长地铁",
+    "max_speed": 250,
+    "car_config": "16编组",
+    "service_year": 2009,
+    "main_lines": "长三角城际",
+    "external_link": "https://baike.baidu.com/item/CRH1B%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84/64971924?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CRH1E",
+    "nickname": "卧地铁",
+    "max_speed": 250,
+    "car_config": "16编组卧铺",
+    "service_year": 2008,
+    "main_lines": "京沪线、京广线夜班车",
+    "external_link": "https://baike.baidu.com/item/CRH1E%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84"
+  },
+  {
+    "model": "CRH1A-A",
+    "nickname": "萌地铁",
+    "max_speed": 250,
+    "car_config": "8编组",
+    "service_year": 2016,
+    "main_lines": "珠三角城际",
+    "external_link": "https://baike.baidu.com/item/CRH1A-A%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84/64586586"
+  },
+  {
+    "model": "CRH2A",
+    "nickname": "带鱼",
+    "max_speed": 250,
+    "car_config": "8编组",
+    "service_year": 2006,
+    "main_lines": "京沪、沪杭线",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH2%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84/5626837"
+  },
+  {
+    "model": "CRH2B",
+    "nickname": "长带鱼",
+    "max_speed": 250,
+    "car_config": "16编组",
+    "service_year": 2008,
+    "main_lines": "长三角城际",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH2B%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84/64965552"
+  },
+  {
+    "model": "CRH2C",
+    "nickname": "疯带鱼",
+    "max_speed": 350,
+    "car_config": "8编组",
+    "service_year": 2008,
+    "main_lines": "武广高铁（早期）",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH2C%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=CRH2C&fromid=7056496&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CRH2E",
+    "nickname": "卧带鱼",
+    "max_speed": 250,
+    "car_config": "16编组卧铺",
+    "service_year": 2016,
+    "main_lines": "京沪/京广夜班车",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH2E%E5%9E%8B%E5%8D%A7%E9%93%BA%E5%8A%A8%E8%BD%A6%E7%BB%84/64909994?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CRH2G",
+    "nickname": "骏马",
+    "max_speed": 250,
+    "car_config": "8编组",
+    "service_year": 2015,
+    "main_lines": "兰新高铁（高寒/防风沙）",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH2G%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=CRH2G&fromid=18816219&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CRH2J",
+    "nickname": "安全卫士",
+    "max_speed": 220,
+    "car_config": "检测专用编组",
+    "service_year": 2015,
+    "main_lines": "全国铁路检测线路",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH2J%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84/64966463?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CRH3A",
+    "nickname": "黄金眼",
+    "max_speed": 250,
+    "car_config": "8编组",
+    "service_year": 2017,
+    "main_lines": "成渝高铁、西成高铁",
+    "external_link": "https://baike.baidu.com/item/CRH3A%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84/22159329?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CRH3C",
+    "nickname": "兔子",
+    "max_speed": 350,
+    "car_config": "8编组",
+    "service_year": 2008,
+    "main_lines": "成渝高铁",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH3%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84/9754567"
+  },
+  {
+    "model": "CRH5A",
+    "nickname": "驴子",
+    "max_speed": 250,
+    "car_config": "8编组",
+    "service_year": 2007,
+    "main_lines": "哈大高铁、京广线",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH5A%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84/64849987"
+  },
+  {
+    "model": "CRH5G",
+    "nickname": "高寒驴",
+    "max_speed": 250,
+    "car_config": "8编组",
+    "service_year": 2015,
+    "main_lines": "兰新高铁、哈齐高铁",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH5G%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84/64851465?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CRH5E",
+    "nickname": "熊猫",
+    "max_speed": 250,
+    "car_config": "16编组卧铺",
+    "service_year": 2016,
+    "main_lines": "东北高寒区夜班车",
+    "external_link": "https://baike.baidu.com/item/CRH5E%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=CRH5E&fromid=19413418&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CRH5J",
+    "nickname": "北境守护者",
+    "max_speed": 250,
+    "car_config": "检测专用编组",
+    "service_year": 2008,
+    "main_lines": "东北高寒区检测线路",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH5J%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84/64852922?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CRH6A",
+    "nickname": "城际飞燕",
+    "max_speed": 200,
+    "car_config": "4/8编组",
+    "service_year": 2013,
+    "main_lines": "珠三角城际、成渝城际",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH6A%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84/53668441?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CRH6A-A",
+    "nickname": "短编飞燕",
+    "max_speed": 200,
+    "car_config": "4编组",
+    "service_year": 2018,
+    "main_lines": "成都都市圈",
+    "external_link": "https://baike.baidu.com/item/CRH6A-A%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84%E5%88%97%E8%BD%A6/63515856?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CRH380A",
+    "nickname": "大灰狼",
+    "max_speed": 350,
+    "car_config": "8编组",
+    "service_year": 2010,
+    "main_lines": "京沪、沪昆高铁",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH380A%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=CRH380A&fromid=2870204&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CRH380AL",
+    "nickname": "长老鼠",
+    "max_speed": 350,
+    "car_config": "16编组",
+    "service_year": 2011,
+    "main_lines": "京广高铁长干线",
+    "external_link": "https://baike.baidu.com/item/CRH380AL%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84/64870531?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CRH380B",
+    "nickname": "大白兔",
+    "max_speed": 350,
+    "car_config": "8编组",
+    "service_year": 2011,
+    "main_lines": "京沪、沪汉蓉线",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH380B%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=crh380B&fromid=4163062&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CRH380BG",
+    "nickname": "高寒兔",
+    "max_speed": 300,
+    "car_config": "8编组",
+    "service_year": 2012,
+    "main_lines": "哈大高铁、哈齐高铁",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH380BG%E5%9E%8B%E9%AB%98%E5%AF%92%E5%8A%A8%E8%BD%A6%E7%BB%84/65355053?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CRH380D",
+    "nickname": "胖头鱼",
+    "max_speed": 310,
+    "car_config": "8编组",
+    "service_year": 2013,
+    "main_lines": "长三角、珠三角城际",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH380D%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=CRH380D&fromid=64463999&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CRH380CL",
+    "nickname": "大白鲨",
+    "max_speed": 380,
+    "car_config": "16编组",
+    "service_year": 2013,
+    "main_lines": "京沪高铁长干线",
+    "external_link": "https://baike.baidu.com/item/%E5%92%8C%E8%B0%90%E5%8F%B7CRH380CL%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84/50648981?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CR300AF",
+    "nickname": "蓝妹妹",
+    "max_speed": 250,
+    "car_config": "8编组",
+    "service_year": 2020,
+    "main_lines": "中西部干线（如郑渝高铁）",
+    "external_link": "https://baike.baidu.com/item/%E5%A4%8D%E5%85%B4%E5%8F%B7CR300AF%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=CR300AF&fromid=50067163&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CR300BF",
+    "nickname": "蓝暖男",
+    "max_speed": 250,
+    "car_config": "8编组",
+    "service_year": 2020,
+    "main_lines": "西南地区线路",
+    "external_link": "https://baike.baidu.com/item/%E5%A4%8D%E5%85%B4%E5%8F%B7CR300BF%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=CR300BF&fromid=23728209&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CR400AF",
+    "nickname": "红神龙",
+    "max_speed": 350,
+    "car_config": "8/16编组",
+    "service_year": 2017,
+    "main_lines": "京沪、京广高铁",
+    "external_link": "https://baike.baidu.com/item/%E5%A4%8D%E5%85%B4%E5%8F%B7CR400AF%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=CR400AF&fromid=20361709&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CR400BF",
+    "nickname": "金凤凰",
+    "max_speed": 350,
+    "car_config": "8/16编组",
+    "service_year": 2017,
+    "main_lines": "京张高铁、京哈高铁",
+    "external_link": "https://baike.baidu.com/item/%E5%A4%8D%E5%85%B4%E5%8F%B7CR400BF%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=CR400BF&fromid=20361653&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CR400AF-Z",
+    "nickname": "瑞龙智行",
+    "max_speed": 350,
+    "car_config": "8编组",
+    "service_year": 2023,
+    "main_lines": "京沪、京广智能标杆车",
+    "external_link": "https://baike.baidu.com/item/CR400AF-Z%E5%9E%8B%E5%A4%8D%E5%85%B4%E5%8F%B7%E6%99%BA%E8%83%BD%E5%8A%A8%E8%BD%A6%E7%BB%84?fromtitle=CR400AF-Z&fromid=64614411&fromModule=lemma_search-box"
+  },
+  {
+    "model": "CR400BF-G",
+    "nickname": "雪域凤凰",
+    "max_speed": 350,
+    "car_config": "8编组（高寒型）",
+    "service_year": 2022,
+    "main_lines": "哈大高铁、京哈高铁",
+    "external_link": "https://baike.baidu.com/item/%E5%A4%8D%E5%85%B4%E5%8F%B7CR400BF-G%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84/64344195?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CR400BF-Z",
+    "nickname": "龙凤呈祥",
+    "max_speed": 350,
+    "car_config": "8编组",
+    "service_year": 2023,
+    "main_lines": "京张高铁、成渝中线",
+    "external_link": "https://baike.baidu.com/item/CR400BF-%EF%BC%88%E7%BA%B5%E5%90%91%E5%8D%A7%E9%93%BA%EF%BC%89Z%E5%8A%A8%E8%BD%A6%E7%BB%84/64743378?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CR400AF-AE",
+    "nickname": "暂无公开外号",
+    "max_speed": 350,
+    "car_config": "16编组卧铺",
+    "service_year": 2024,
+    "main_lines": "广深港高铁夜班车",
+    "external_link": "https://baike.baidu.com/item/%E5%A4%8D%E5%85%B4%E5%8F%B7CR400AF-AE%E5%9E%8B%E5%8A%A8%E8%BD%A6%E7%BB%84/64796823?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CR400AF-J",
+    "nickname": "检测先锋",
+    "max_speed": 350,
+    "car_config": "检测专用编组",
+    "service_year": 2022,
+    "main_lines": "全国高铁检测线路",
+    "external_link": "https://baike.baidu.com/item/CR400AF-J%E9%AB%98%E9%80%9F%E7%BB%BC%E5%90%88%E6%A3%80%E6%B5%8B%E5%88%97%E8%BD%A6/64018723?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CR450AF",
+    "nickname": "锐龙追梦",
+    "max_speed": 400,
+    "car_config": "8编组",
+    "service_year": 2025,
+    "main_lines": "暂未正式运营",
+    "external_link": "https://baike.baidu.com/item/%E5%A4%8D%E5%85%B4%E5%8F%B7CR450AF%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84/65225310?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CR450BF",
+    "nickname": "科技之光",
+    "max_speed": 400,
+    "car_config": "8编组",
+    "service_year": 2025,
+    "main_lines": "暂未正式运营",
+    "external_link": "https://baike.baidu.com/item/%E5%A4%8D%E5%85%B4%E5%8F%B7CR450BF%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84/64767296?fromModule=search-result_lemma"
+  },
+  {
+    "model": "CR200J",
+    "nickname": "绿巨人",
+    "max_speed": 160,
+    "car_config": "动力集中式",
+    "service_year": 2019,
+    "main_lines": "普速铁路升级线（如京沪线）",
+    "external_link": "https://baike.baidu.com/item/%E5%A4%8D%E5%85%B4%E5%8F%B7CR200J%E5%9E%8B%E7%94%B5%E5%8A%9B%E5%8A%A8%E8%BD%A6%E7%BB%84/23722145"
+  },
+  {
+    "model": "CJ6",
+    "nickname": "暂无公开外号",
+    "max_speed": 160,
+    "car_config": "城际动车组",
+    "service_year": 2019,
+    "main_lines": "长株潭城际铁路",
+    "external_link": "https://baike.baidu.com/item/CJ6%E5%8A%A8%E8%BD%A6%E7%BB%84/24229612?fromModule=search-result_lemma"
+  }
+]
