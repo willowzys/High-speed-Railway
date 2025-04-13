@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router' // 修改为 createWebHashHistory
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),  // 使用 Hash 模式
   routes: [
     {
       path: '/',
