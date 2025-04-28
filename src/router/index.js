@@ -1,7 +1,10 @@
-import { createRouter, createWebHashHistory } from 'vue-router' // 修改为 createWebHashHistory
+import { createRouter, createWebHashHistory } from 'vue-router'
+import TrainModels from '../views/TrainModels.vue'
+import TechTree from '../views/TechTree.vue'
+import TransportCompetition from '../views/TransportCompetition.vue'
 
 const router = createRouter({
-  history: createWebHashHistory(),  // 使用 Hash 模式
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
@@ -9,15 +12,18 @@ const router = createRouter({
     },
     {
       path: '/train-models',
-      component: () => import('../views/TrainModels.vue')
-    },
-    {
-      path: '/train-models/:model',
-      component: () => import('../views/TrainModels.vue')
+      name: 'TrainModels',
+      component: TrainModels
     },
     {
       path: '/tech-tree',
-      component: () => import('../views/TechTree.vue')
+      name: 'TechTree',
+      component: TechTree
+    },
+    {
+      path: '/transport-competition',
+      name: 'TransportCompetition',
+      component: TransportCompetition
     }
   ]
 })

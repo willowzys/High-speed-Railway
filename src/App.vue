@@ -14,6 +14,7 @@
           <div class="flex-grow" />
           <el-menu-item index="/train-models">车型数据</el-menu-item>
           <el-menu-item index="/tech-tree">技术谱系</el-menu-item>
+          <el-menu-item index="/transport-competition">交通运输竞争力</el-menu-item>
         </el-menu>
       </el-header>
       <el-main>

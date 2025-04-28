@@ -10,6 +10,7 @@
       <div ref="treeChartRef" style="height: 1000px"></div>
     </el-card>
 
+    <!--
     <el-card style="margin-top: 20px">
       <template #header>
         <div class="card-header">
@@ -18,6 +19,7 @@
       </template>
       <TechForceGraph />
     </el-card>
+-->
 
     <el-card style="margin-top: 20px">
       <template #header>
@@ -44,86 +46,113 @@ onMounted(() => {
   const treeChart = echarts.init(treeChartRef.value)
   
   // 定义不同技术来源的颜色
-  const techColors = {
-    '庞巴迪系': '#1890ff',
-    '新干线系': '#52c41a',
-    '西门子系': '#722ed1',
-    '阿尔斯通系': '#fa8c16',
-    '自主创新系': '#f5222d'
+const techColors = {
+  'Regina/Zefiro平台': '#5470C6',
+  'Zefiro 380平台': '#91CC75',
+  'E2-1000平台': '#EE6666',
+  '自主升级版': '#FAC858',
+  'Velaro平台': '#73C0DE',
+  'Velaro+新干线技术融合': '#3BA272',
+  'Pendolino平台': '#FC8452',
+  '技术消化吸收': '#9A60B4',
+  '动力集中式': '#EA7CCC',
+  '城际专用平台': '#FF9F7F',
+  '试验型超高速': '#BDB76B'
+}
+const processTreeColor = (node, inheritedTech = null) => {
+  const techSource = node.tech_source || inheritedTech
+  const color = techColors[techSource] || '#ccc'
+  const imageName = node.name?.replace(/\//g, '-') // 防止特殊字符影响路径
+  const imagePath = `/images/trains/${imageName}.png`
+
+  node.itemStyle = {
+    color: color
   }
 
-  const option = {
-    tooltip: {
-      trigger: 'item',
-      triggerOn: 'mousemove',
-      formatter: (params) => {
-        let text = `<strong>${params.data.name}</strong>`
-        if (params.data.tech_source) {
-          text += `<br/>技术来源: ${params.data.tech_source}`
-        }
-        if (params.data.type) {
-          text += `<br/>类型: ${params.data.type}`
-        }
-        return text
-      }
-    },
-    series: [
-      {
-        type: 'tree',
-        data: [relationshipData],
-        layout: 'radial',
-        orient: 'LR',
-        initialTreeDepth: 2,
-        symbolSize: 12,
-        itemStyle: {
-          color: (params) => {
-            // 根据技术来源设置节点颜色
-            const rootName = params.data.name
-            for (const tech in techColors) {
-              if (rootName === tech || params.data.tech_source?.includes(tech)) {
-                return techColors[tech]
-              }
-            }
-            return '#666'
-          }
-        },
-        lineStyle: {
-          color: '#ccc',
-          width: 1.5,
-          curveness: 0.5
-        },
-        label: {
-          show: true,
-          position: 'right',
-          distance: 5,
-          fontSize: 13,
-          color: '#333',
-          formatter: (params) => {
-            let text = params.data.name
-            if (params.data.type) {
-              text += '\n' + params.data.type
-            }
-            return text
-          },
-          overflow: 'truncate',
-          width: 120
-        },
-        labelLayout: {
-          hideOverlap: true
-        },
-        emphasis: {
-          focus: 'descendant',
-          scale: true
-        },
-        expandAndCollapse: true,
-        animationDuration: 550,
-        animationDurationUpdate: 750,
-        roam: true,
-        nodeGap: 30,
-        radius: '60%'
-      }
-    ]
+  // 是否为叶子节点（即具体车型）
+  const isLeaf = !node.children || node.children.length === 0
+
+  if (isLeaf) {
+    node.symbol = `image://${imagePath}`
+    node.symbolSize = 40
+
+    // 保留 label 设置
+    node.label = {
+      show: true,
+      position: 'right',
+      formatter: node.name,
+      fontSize: 12
+    }
+  } else {
+    node.symbol = 'circle'
+    node.symbolSize = 10
   }
+
+  // 递归处理子节点
+  if (node.children && node.children.length > 0) {
+    node.children.forEach(child => processTreeColor(child, techSource))
+  }
+
+  return node
+}
+
+
+
+const coloredData = processTreeColor(relationshipData)
+
+const option = {
+  tooltip: {
+    trigger: 'item',
+    triggerOn: 'mousemove',
+    formatter: (params) => {
+      let text = `<strong>${params.data.name}</strong>`
+      if (params.data.tech_source) {
+        text += `<br/>技术来源: ${params.data.tech_source}`
+      }
+      if (params.data.type) {
+        text += `<br/>类型: ${params.data.type}`
+      }
+      return text
+    }
+  },
+  series: [
+    {
+      type: 'tree',
+      data: [coloredData], // 注意是数组！
+      layout: 'radial',
+      symbolSize: 10,
+      initialTreeDepth: -1,
+      label: {
+        position: 'right',
+        verticalAlign: 'middle',
+        align: 'left',
+        fontSize: 12,
+        color: '#000',
+        formatter: (params) => {
+          let text = params.data.name
+          if (params.data.type) text += '\n' + params.data.type
+          return text
+        }
+      },
+      itemStyle: {
+        borderColor: '#555',
+        borderWidth: 1
+      },
+      lineStyle: {
+        color: '#ccc',
+        curveness: 0.5
+      },
+      emphasis: {
+        focus: 'descendant'
+      },
+      expandAndCollapse: true,
+      animationDuration: 550,
+      animationDurationUpdate: 750,
+      roam: true
+    }
+  ]
+}
+
 
   treeChart.setOption(option)
 

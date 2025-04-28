@@ -67,8 +67,8 @@
           "name": "CRH3系列",
           "children": [
             {"name": "CRH3C", "type": "原型车"},
-            {"name": "CRH3A", "type": "城际改进型"},
-            {"name": "CRH3A-A", "type": "统型化改进"}
+            {"name": "CRH3A", "type": "城际改进型"}
+
           ]
         },
         {
@@ -119,7 +119,6 @@
               "name": "CR400AF家族",
               "children": [
                 {"name": "CR400AF", "type": "基础型"},
-                {"name": "CR400AF-A/B/C", "type": "编组扩展型"},
                 {"name": "CR400AF-Z", "type": "智能型"},
                 {"name": "CR400AF-AE", "type": "卧铺型"},
                 {"name": "CR400AF-J", "type": "检测车型"}
@@ -129,7 +128,6 @@
               "name": "CR400BF家族",
               "children": [
                 {"name": "CR400BF", "type": "基础型"},
-                {"name": "CR400BF-A/B/C", "type": "编组扩展型"},
                 {"name": "CR400BF-Z", "type": "智能型"},
                 {"name": "CR400BF-G", "type": "高寒型"},
                 {"name": "CR400BF-J", "type": "检测车型"}

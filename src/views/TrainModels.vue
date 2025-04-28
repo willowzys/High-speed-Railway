@@ -11,6 +11,7 @@
           <TrainEvolutionChart />
         </el-card>
       </el-col>
+      
       <el-col :span="24" style="margin-top: 20px">
         <el-card>
           <template #header>
@@ -21,6 +22,7 @@
           <TrainParallelChart :data="trainData" />
         </el-card>
       </el-col>
+
       <el-col :span="24" style="margin-top: 20px">
         <el-card>
           <template #header>
@@ -45,7 +47,7 @@ import TrainCardGrid from '../components/TrainCardGrid.vue'
 
 const trainData = ref(trainModelsData.map(train => ({
   ...train,
-  image: trainImages[train.model] || '/images/trains/CRH380A.svg'
+  image: trainImages[train.model] || '/images/trains/CRH380A.png'
 })))
 </script>
 

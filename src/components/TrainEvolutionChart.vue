@@ -24,7 +24,7 @@ const processData = (data) => {
     else if (train.model.startsWith('CRH6')) series = 'CRH6系'
     else if (train.model.startsWith('CR300')) series = 'CR300系'
     else if (train.model.startsWith('CR400')) series = 'CR400系'
-
+    else if (train.model.startsWith('CR450')) series = 'CR450系'
     return {
       value: [train.service_year, speed, carCount],
       series,
@@ -49,7 +49,7 @@ const initChart = () => {
     'CRH6系': '#73C0DE',
     'CR300系': '#3BA272',
     'CR400系': '#FC8452',
-    '其他': '#9A60B4'
+    'CR450系': '#9A60B4'
   }
 
   const series = allSeries.map(seriesName => ({

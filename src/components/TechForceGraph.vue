@@ -18,25 +18,27 @@ const transformData = (data) => {
   const processNode = (node, parentId = null, inheritedTech = null) => {
     const nodeId = node.name
     const techSource = node.tech_source || inheritedTech
-    nodes.push({
-      id: nodeId,
-      name: node.name,
-      tech_source: techSource,
-      type: node.type,
-      symbolSize: node.children ? 20 : 10,
-      itemStyle: {
-        color: getTechColor(techSource)
-      }
-    })
+nodes.push({
+  id: nodeId,
+  name: node.name,
+  tech_source: techSource, // 确保继承到了
+  type: node.type,
+  symbolSize: node.children ? 20 : 10,
+  itemStyle: {
+    color: getTechColor(techSource) // 颜色取决于技术谱系
+  }
+})
     
     if (parentId) {
       links.push({
         source: parentId,
         target: nodeId,
         lineStyle: {
-          color: '#aaa',
-          width: 1
-        }
+  color: '#ccc',
+  opacity: 0.8,
+  width: 1,
+  curveness: 0.2
+}
       })
     }
     
@@ -51,15 +53,16 @@ const transformData = (data) => {
 
 // 获取技术来源对应的颜色
 const getTechColor = (techSource) => {
-    const techColors = {
-        '庞巴迪系': '#4F94CD',
-        '新干线系': '#6FCF97',
-        '西门子系': '#A285D1',
-        '阿尔斯通系': '#F2B84B',
-        '自主创新系': '#EB5757'
-    }
-    return techColors[techSource] || '#999'
+  const techColors = {
+    '庞巴迪系': '#6BAED6',     // 蓝色系
+    '新干线系': '#74C476',     // 绿色系
+    '西门子系': '#9E9AC8',     // 紫色系
+    '阿尔斯通系': '#FDAE6B',   // 橙色系
+    '自主创新系': '#FB6A4A'    // 红色系
+  }
+  return techColors[techSource] || '#BDBDBD'
 }
+
 
 // 初始化图表
 const initChart = () => {
