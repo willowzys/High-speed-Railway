@@ -63,7 +63,7 @@ const processTreeColor = (node, inheritedTech = null) => {
   const techSource = node.tech_source || inheritedTech
   const color = techColors[techSource] || '#ccc'
   const imageName = node.name?.replace(/\//g, '-') // 防止特殊字符影响路径
-  const imagePath = `/images/trains/${imageName}.png`
+  const imagePath = `images/trains/${imageName}.png`
 
   node.itemStyle = {
     color: color
