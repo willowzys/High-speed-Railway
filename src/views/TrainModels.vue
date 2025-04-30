@@ -1,7 +1,8 @@
 <template>
   <div class="train-models">
     <el-row :gutter="20">
-      <el-col :span="24">
+      <!-- 左列：概览组件 + 竞争力分析组件 -->
+      <el-col :span="12">
         <el-card>
           <template #header>
             <div class="card-header">
@@ -10,19 +11,29 @@
           </template>
           <TrainEvolutionChart />
         </el-card>
-      </el-col>
-      
-      <el-col :span="24" style="margin-top: 20px">
-        <el-card>
+        <el-card style="margin-top: 20px">
           <template #header>
             <div class="card-header">
-              <span>高铁车型技术参数对比</span>
+              <span>中国高铁竞争力分析</span>
             </div>
           </template>
-          <TrainParallelChart :data="trainData" />
+          <TransportationChart />
         </el-card>
       </el-col>
 
+      <!-- 右列：谱系图组件 -->
+      <el-col :span="12">
+        <el-card>
+          <template #header>
+            <div class="card-header">
+              <span>中国高铁车型谱系图</span>
+            </div>
+          </template>
+          <Traintree />
+        </el-card>
+      </el-col>
+
+      <!-- 下方：车型详细信息 -->
       <el-col :span="24" style="margin-top: 20px">
         <el-card>
           <template #header>
@@ -42,8 +53,9 @@ import { ref } from 'vue'
 import trainModelsData from '../../data/high_speed_train_models_cleaned.json'
 import trainImages from '../../data/train_images.json'
 import TrainEvolutionChart from '../components/TrainEvolutionChart.vue'
-import TrainParallelChart from '../components/TrainParallelChart.vue'
 import TrainCardGrid from '../components/TrainCardGrid.vue'
+import Traintree from '../components/Traintree.vue'
+import TransportationChart from '../components/TransportationChart.vue';
 
 const trainData = ref(trainModelsData.map(train => ({
   ...train,

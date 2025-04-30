@@ -1,44 +1,12 @@
 <template>
-  <div class="tech-tree">
-    <!--    -->
-    <el-card>
-      <template #header>
-        <div class="card-header">
-          <span>中国高铁技术谱系关系图</span>
-        </div>
-      </template>
-      <div ref="treeChartRef" style="height: 1000px"></div>
-    </el-card>
-
-    <!--
-    <el-card style="margin-top: 20px">
-      <template #header>
-        <div class="card-header">
-          <span>高铁技术关联网络图</span>
-        </div>
-      </template>
-      <TechForceGraph />
-    </el-card>
--->
-
-    <el-card style="margin-top: 20px">
-      <template #header>
-        <div class="card-header">
-          <span>高铁技术谱系旭日图</span>
-        </div>
-      </template>
-      <TechSunburstChart />
-    </el-card>
-  </div>
+      <div ref="treeChartRef" style="height: 600px"></div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 import relationshipData from '../../data/relationship.json'
-import TechForceGraph from '../components/TechForceGraph.vue'
-
-import TechSunburstChart from '../components/TechSunburstChart.vue'
 
 const treeChartRef = ref(null)
 
