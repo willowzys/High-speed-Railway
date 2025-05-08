@@ -1,54 +1,43 @@
 <template>
   <div id="app">
-    <div class="container">
-      <div class="chart-box map-box">
-        <HeatMapChart />
-      </div>
-      <div class="chart-box line-box">
-        <RailChart />
-      </div>
+    <div class="chart-box fullscreen">
+      <RailwayMap />
+    </div>
+    <div class="chart-box fullscreen">
+      <RailChart />
     </div>
   </div>
 </template>
 
 <script>
 import RailChart from './components/RailChart.vue'
-import HeatMapChart from './components/HeatMapChart.vue'
+import RailwayMap from './components/RailwayMap.vue'
 
 export default {
   name: 'App',
-  components: { RailChart, HeatMapChart },
+  components: { RailChart, RailwayMap },
 }
 </script>
 
 <style>
-#app {
-  padding: 40px;
-  background: #f5f7fa;
-  min-height: 100vh;
+/* 只在 html 层控制滚动 */
+html {
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+body, #app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* 禁止其他滚动 */
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-  gap: 40px;
-}
-
-/* 公共样式 */
 .chart-box {
+  height: 100vh;
+  width: 100%;
   background: white;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* 单独控制宽度 */
-.map-box {
-  flex: 1;
-  border: 1px solid #efa; /* 添加边框以便更清晰地观察区域 */
-}
-
-.line-box {
-  flex: 1;
+  box-sizing: border-box;
+  scroll-snap-align: start;
 }
 </style>

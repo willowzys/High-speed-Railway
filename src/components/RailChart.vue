@@ -18,7 +18,6 @@
         const chart = echarts.init(this.$refs.chart)
         
         const option = {
-          // 1. 标题和提示框
           title: {
             text: '中国高铁总里程增长趋势 (2008-2023)',
             subtext: '数据来源：国家铁路局',
@@ -26,7 +25,8 @@
             textStyle: {
               fontSize: 18,
               fontWeight: 'bold'
-            }
+            },
+            top: '5%',  // 标题位置微调（可选）
           },
           tooltip: {
             trigger: 'axis',
@@ -47,7 +47,7 @@
               }
             },
             axisLabel: {
-              interval: 1 // 隔年显示
+              interval: 1 
             }
           },
           yAxis: {
@@ -99,7 +99,7 @@
             data: railData.mileage
           }],
   
-          // 4. 动画效果
+          // 动画效果
           animationDuration: 2000
         }
   
@@ -113,15 +113,18 @@
   </script>
   
   <style scoped>
-  .chart-container {
-    width: 100%;
-    height: 500px; /* 或使用 aspect-ratio: 16/10 */
-  }
-  .chart {
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    background: white;
-  }
-  </style>
+.chart-container {
+  width: calc(100% - 10px); /* 5px 左右 */
+  height: 95vh; /* 5px 上下 */
+  margin: 5px;
+  box-sizing: border-box;
+}
+
+.chart {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  background: white;
+}
+</style>
