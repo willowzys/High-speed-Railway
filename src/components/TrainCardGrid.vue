@@ -24,16 +24,20 @@
         v-for="train in filteredAndSortedTrains"
         :key="train.model"
         :train="train"
+        :id="`train-card-${train.model}`"
+        :class="{ 'highlighted-card': highlightedModel === train.model }"
         @click="handleTrainClick(train)"
+        ref="trainCards"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import TrainCard from './TrainCard.vue'
+import { useEventBus } from '../utils/eventBus'
 
 const props = defineProps({
   trains: {
@@ -46,6 +50,8 @@ const props = defineProps({
 const selectedSeries = ref('')
 const sortBy = ref('service_year')
 const ascending = ref(true)
+const highlightedModel = ref('')
+const trainCards = ref([])  // 用于引用所有卡片组件
 
 // 获取所有车型系列
 const trainSeries = computed(() => {
@@ -58,6 +64,7 @@ const trainSeries = computed(() => {
     else if (train.model.startsWith('CRH6')) series.add('CRH6系')
     else if (train.model.startsWith('CR300')) series.add('CR300系')
     else if (train.model.startsWith('CR400')) series.add('CR400系')
+    else if (train.model.startsWith('CR450')) series.add('CR450系')
     else series.add('其他')
   })
   return Array.from(series)
@@ -109,6 +116,46 @@ const handleTrainClick = (train) => {
     })
   }
 }
+
+// 滚动到指定车型卡片
+const scrollToTrainCard = (modelName) => {
+  if (!modelName) return
+  
+  highlightedModel.value = modelName
+  
+  // 延迟执行滚动，确保DOM已更新
+  setTimeout(() => {
+    const cardElement = document.getElementById(`train-card-${modelName}`)
+    if (cardElement) {
+      cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      
+      // 闪烁高亮效果，2秒后取消高亮
+      setTimeout(() => {
+        highlightedModel.value = ''
+      }, 2000)
+    }
+  }, 100)
+}
+
+// 监听事件总线
+onMounted(() => {
+  const { on } = useEventBus()
+  // 监听从Traintree发来的车型选择事件
+  const unsubscribe = on('select-train-model', (modelName) => {
+    console.log('TrainCardGrid: 接收到车型选择事件', modelName)
+    scrollToTrainCard(modelName)
+  })
+
+  // 保存取消订阅函数
+  return () => {
+    if (unsubscribe) unsubscribe()
+  }
+})
+
+// 清理事件监听
+onUnmounted((stop) => {
+  if (stop) stop()
+})
 </script>
 
 <style scoped>
@@ -127,6 +174,13 @@ const handleTrainClick = (train) => {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
+}
+
+/* 高亮卡片样式 */
+:deep(.highlighted-card) {
+  box-shadow: 0 0 15px rgba(64, 158, 255, 0.8);
+  transform: scale(1.03);
+  transition: all 0.3s ease;
 }
 
 @media (max-width: 768px) {

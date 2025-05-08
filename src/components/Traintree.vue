@@ -1,165 +1,232 @@
 <template>
-      <div ref="treeChartRef" style="height: 600px"></div>
+  <div class="tree-container">
+   
+    <div ref="chartRef" style="width: 100%; height: 600px;"></div>
+  </div>
 </template>
 
-
-<script setup>
-import { ref, onMounted } from 'vue'
+<script>
 import * as echarts from 'echarts'
 import relationshipData from '../../data/relationship.json'
+import { seriesColors } from '../utils/colorConfig'
+import { useEventBus } from '../utils/eventBus'
 
-const treeChartRef = ref(null)
-
-onMounted(() => {
-  const treeChart = echarts.init(treeChartRef.value)
-  
-  // 定义不同技术来源的颜色
-const techColors = {
-  'Regina/Zefiro平台': '#5470C6',
-  'Zefiro 380平台': '#91CC75',
-  'E2-1000平台': '#EE6666',
-  '自主升级版': '#FAC858',
-  'Velaro平台': '#73C0DE',
-  'Velaro+新干线技术融合': '#3BA272',
-  'Pendolino平台': '#FC8452',
-  '技术消化吸收': '#9A60B4',
-  '动力集中式': '#EA7CCC',
-  '城际专用平台': '#FF9F7F',
-  '试验型超高速': '#BDB76B'
-}
-const processTreeColor = (node, inheritedTech = null) => {
-  const techSource = node.tech_source || inheritedTech
-  const color = techColors[techSource] || '#ccc'
-  const imageName = node.name?.replace(/\//g, '-') // 防止特殊字符影响路径
-  const imagePath = `images/trains/${imageName}.png`
-
-  node.itemStyle = {
-    color: color
-  }
-
-  // 是否为叶子节点（即具体车型）
-  const isLeaf = !node.children || node.children.length === 0
-
-  if (isLeaf) {
-    node.symbol = `image://${imagePath}`
-    node.symbolSize = 40
-
-    // 保留 label 设置
-    node.label = {
-      show: true,
-      position: 'right',
-      formatter: node.name,
-      fontSize: 12
-    }
-  } else {
-    node.symbol = 'circle'
-    node.symbolSize = 10
-  }
-
-  // 递归处理子节点
-  if (node.children && node.children.length > 0) {
-    node.children.forEach(child => processTreeColor(child, techSource))
-  }
-
-  return node
-}
-
-
-
-const coloredData = processTreeColor(relationshipData)
-
-const option = {
-  tooltip: {
-    trigger: 'item',
-    triggerOn: 'mousemove',
-    formatter: (params) => {
-      let text = `<strong>${params.data.name}</strong>`
-      if (params.data.tech_source) {
-        text += `<br/>技术来源: ${params.data.tech_source}`
-      }
-      if (params.data.type) {
-        text += `<br/>类型: ${params.data.type}`
-      }
-      return text
+export default {
+  name: 'Traintree',
+  data() {
+    return {
+      chart: null,
+      selectedSeries: '',
+      hoveredModel: null
     }
   },
-  series: [
-    {
-      type: 'tree',
-      data: [coloredData], // 注意是数组！
-      layout: 'radial',
-      symbolSize: 10,
-      initialTreeDepth: -1,
-      label: {
-        position: 'right',
-        verticalAlign: 'middle',
-        align: 'left',
-        fontSize: 12,
-        color: '#000',
-        formatter: (params) => {
-          let text = params.data.name
-          if (params.data.type) text += '\n' + params.data.type
-          return text
+  mounted() {
+    this.initChart()
+    window.addEventListener('resize', this.handleResize)
+    
+    // 监听事件总线
+    const { on, off } = useEventBus()
+    
+    // 监听系列选择事件
+    this.unsubscribeSeries = on('select-train-series', (series) => {
+      this.selectedSeries = series
+      this.hoveredModel = null
+      this.updateChart()
+    })
+    
+    // 监听鼠标悬停事件
+    this.unsubscribeHover = on('hover-train-model', (data) => {
+      this.hoveredModel = data?.model || null
+      this.updateChart()
+    })
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize)
+    this.chart?.dispose()
+    
+    // 取消事件订阅
+    if (this.unsubscribeSeries) this.unsubscribeSeries()
+    if (this.unsubscribeHover) this.unsubscribeHover()
+  },
+  methods: {
+    handleResize() {
+      if (this.chart) {
+        this.chart.resize()
+      }
+    },
+    initChart() {
+      if (this.chart) {
+        this.chart.dispose()
+      }
+      
+      this.chart = echarts.init(this.$refs.chartRef)
+      this.updateChart()
+    },
+    
+    updateChart() {
+      if (!this.chart) return
+      
+      // 处理数据
+      const processedData = this.processData(relationshipData)
+      
+      // 配置选项
+      const option = {
+        tooltip: {
+          trigger: 'item',
+          triggerOn: 'mousemove'
+        },
+        series: [
+          {
+            type: 'tree',
+            data: [processedData],
+            layout: 'radial',
+            symbolSize: 10,
+            initialTreeDepth: -1,
+            label: {
+              position: 'right',
+              verticalAlign: 'middle',
+              align: 'left',
+              fontSize: 12
+            },
+            lineStyle: {
+              color: '#ccc',
+              curveness: 0.5
+            },
+            emphasis: {
+              focus: 'descendant'
+            },
+            expandAndCollapse: true,
+            animationDuration: 550,
+            roam: true
+          }
+        ]
+      }
+      
+      this.chart.setOption(option)
+      
+      // 添加点击事件
+      this.chart.off('click')
+      this.chart.on('click', (params) => {
+        if (params.data && params.data.name) {
+          // 通过事件总线发送点击的车型信息
+          const { emit } = useEventBus()
+          emit('select-train-model', params.data.name)
+          console.log('Traintree: 点击事件触发', params.data.name)
         }
-      },
-      itemStyle: {
-        borderColor: '#555',
-        borderWidth: 1
-      },
-      lineStyle: {
-        color: '#ccc',
-        curveness: 0.5
-      },
-      emphasis: {
-        focus: 'descendant'
-      },
-      expandAndCollapse: true,
-      animationDuration: 550,
-      animationDurationUpdate: 750,
-      roam: true
+      })
+    },
+    processData(data) {
+      // 深拷贝数据
+      const clonedData = JSON.parse(JSON.stringify(data))
+      
+      // 递归处理节点
+      const processNode = (node) => {
+        // 获取节点系列
+        let nodeSeries = null
+        if (node.name) {
+          if (node.name.includes('CRH1') || node.name.startsWith('CRH1')) {
+            nodeSeries = 'CRH1系'
+          } else if (node.name.includes('CRH2') || node.name.startsWith('CRH2')) {
+            nodeSeries = 'CRH2系'
+          } else if (node.name.includes('CRH3') || node.name.startsWith('CRH3')) {
+            nodeSeries = 'CRH3系'
+          } else if (node.name.includes('CRH380') || node.name.startsWith('CRH380')) {
+            nodeSeries = 'CRH380系'
+          } else if (node.name.includes('CRH5') || node.name.startsWith('CRH5')) {
+            nodeSeries = 'CRH5系'
+          } else if (node.name.includes('CRH6') || node.name.startsWith('CRH6')) {
+            nodeSeries = 'CRH6系'
+          } else if (node.name.includes('CR300') || node.name.startsWith('CR300')) {
+            nodeSeries = 'CR300系'
+          } else if (node.name.includes('CR400') || node.name.startsWith('CR400')) {
+            nodeSeries = 'CR400系'
+          } else if (node.name.includes('CR450') || node.name.startsWith('CR450')) {
+            nodeSeries = 'CR450系'
+          }
+        }
+        
+        // 检查节点是否属于选中的系列
+        const matchesFilter = !this.selectedSeries || nodeSeries === this.selectedSeries
+        
+        // 检查是否是当前悬停的车型
+        const isHovered = this.hoveredModel === node.name
+        
+        // 获取节点颜色
+        const color = nodeSeries ? seriesColors[nodeSeries] : '#ccc'
+        
+        // 设置节点样式
+        node.itemStyle = {
+          color: matchesFilter ? color : '#ddd',
+          opacity: matchesFilter ? (isHovered ? 1 : 0.8) : 0.6
+        }
+        
+        // 是否为叶子节点
+        const isLeaf = !node.children || node.children.length === 0
+        
+        // 图片路径
+        const imageName = node.name?.replace(/\//g, '-') // 防止特殊字符影响路径
+        const imagePath = `images/trains/${imageName}.png`
+        
+        if (isLeaf) {
+          // 只有当前悬停的车型才显示图片，其他节点都显示为圆形
+          if (isHovered) {
+            node.symbol = `image://${imagePath}`
+            node.symbolSize = 50  // 悬停时的图片尺寸略大
+          } else {
+            node.symbol = 'circle'
+            node.symbolSize = matchesFilter ? 15 : 10
+          }
+          
+          // 设置标签
+          node.label = {
+            show: true,
+            position: 'right',
+            formatter: node.name,
+            fontSize: 12,
+            color: matchesFilter ? '#333' : '#999'
+          }
+        } else {
+          node.symbol = 'circle'
+          node.symbolSize = matchesFilter ? 15 : 10
+        }
+        
+        // 递归处理子节点
+        if (node.children && node.children.length > 0) {
+          node.children.forEach(child => processNode(child))
+        }
+        
+        return node
+      }
+      
+      return processNode(clonedData)
     }
-  ]
+  }
 }
-
-
-  treeChart.setOption(option)
-
-  // 响应式调整图表大小
-  window.addEventListener('resize', () => {
-    treeChart.resize()
-  })
-})
 </script>
 
-
 <style scoped>
-.tech-tree {
-  padding: 20px;
-}
-
-.card-header {
+.tree-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.tech-tree {
-  padding: 20px;
-  background: #f0f2f5;
-  min-height: 100vh;
-}
-
-.card-header {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  padding: 6px 0;
-}
-
-.chart-box {
-  width: 100%;
-  height: 900px;
-  background: #fff;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+}
+
+.tree-controls {
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #eee;
+}
+
+/* 美化提示信息 */
+:deep(.el-alert) {
+  margin-bottom: 0;
+}
+
+:deep(.el-alert__title) {
+  font-size: 14px;
 }
 </style>

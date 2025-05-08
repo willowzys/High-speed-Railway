@@ -136,6 +136,23 @@
           ]
         },
         {
+          "name": "CR450系列",
+          "children": [
+            {
+              "name": "CR450AF家族",
+              "children": [
+                {"name": "CR450AF", "type": "智能型"}
+              ]
+            },
+            {
+              "name": "CR450BF家族",
+              "children": [
+                {"name": "CR450BF", "type": "智能型"}
+              ]
+            }
+          ]
+        },
+        {
           "name": "特殊车型",
           "children": [
             {"name": "CR200J", "tech_source": "动力集中式"},

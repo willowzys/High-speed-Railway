@@ -1,44 +1,51 @@
 <template>
   <div class="train-models">
+    <!-- 顶部概览区域 -->
     <el-row :gutter="20">
-      <!-- 左列：概览组件 + 竞争力分析组件 -->
-      <el-col :span="12">
-        <el-card>
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+        <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>中国高铁车型发展概览</span>
+              <span class="card-title">中国高铁车型发展概览</span>
             </div>
           </template>
           <TrainEvolutionChart />
         </el-card>
-        <el-card style="margin-top: 20px">
-          <template #header>
-            <div class="card-header">
-              <span>中国高铁竞争力分析</span>
-            </div>
-          </template>
-          <TransportationChart />
-        </el-card>
       </el-col>
 
-      <!-- 右列：谱系图组件 -->
-      <el-col :span="12">
-        <el-card>
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+        <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>中国高铁车型谱系图</span>
+              <span class="card-title">中国高铁车型谱系图</span>
             </div>
           </template>
           <Traintree />
         </el-card>
       </el-col>
+    </el-row>
 
-      <!-- 下方：车型详细信息 -->
-      <el-col :span="24" style="margin-top: 20px">
-        <el-card>
+    <!-- 中部分析区域 -->
+    <el-row :gutter="20" class="section-margin">
+      <el-col :span="24">
+        <el-card class="chart-card highlight-card">
           <template #header>
             <div class="card-header">
-              <span>高铁车型详细信息</span>
+              <span class="card-title">中国高铁竞争力分析</span>
+            </div>
+          </template>
+          <TransportationChart />
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <!-- 底部详细信息区域 -->
+    <el-row :gutter="20" class="section-margin">
+      <el-col :span="24">
+        <el-card class="chart-card">
+          <template #header>
+            <div class="card-header">
+              <span class="card-title">高铁车型详细信息</span>
             </div>
           </template>
           <TrainCardGrid :trains="trainData" />
@@ -65,12 +72,58 @@ const trainData = ref(trainModelsData.map(train => ({
 
 <style scoped>
 .train-models {
-  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 10px;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #303133;
+}
+
+.chart-card {
+  margin-bottom: 0;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.highlight-card {
+  border-left: 4px solid #409EFF;
+}
+
+.section-margin {
+  margin-top: 20px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .train-models {
+    padding: 5px;
+  }
+  
+  .section-margin {
+    margin-top: 15px;
+  }
+  
+  .card-title {
+    font-size: 16px;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 </style>

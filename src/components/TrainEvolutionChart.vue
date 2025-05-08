@@ -6,9 +6,13 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
 import trainModelsData from '../../data/high_speed_train_models_cleaned.json'
+import { useEventBus } from '../utils/eventBus'
+import { seriesColors } from '../utils/colorConfig'
 
 const chartRef = ref(null)
 let chart = null
+const { emit: emitEvent } = useEventBus()
+const selectedSeries = ref('')
 
 const processData = (data) => {
   return data.map(train => {
@@ -40,17 +44,8 @@ const initChart = () => {
 
   const processedData = processData(trainModelsData)
   const allSeries = [...new Set(processedData.map(item => item.series))]
-
-  const colorMap = {
-    'CRH1系': '#5470C6',
-    'CRH2系': '#91CC75',
-    'CRH3系': '#FAC858',
-    'CRH5系': '#EE6666',
-    'CRH6系': '#73C0DE',
-    'CR300系': '#3BA272',
-    'CR400系': '#FC8452',
-    'CR450系': '#9A60B4'
-  }
+  
+  // 使用统一的颜色配置
 
   const series = allSeries.map(seriesName => ({
     name: seriesName,
@@ -60,7 +55,7 @@ const initChart = () => {
       return Math.sqrt(data[2]) * 8
     },
     itemStyle: {
-      color: colorMap[seriesName] || '#ccc',
+      color: seriesColors[seriesName] || '#ccc',
       opacity: 0.8,
       borderColor: '#fff',
       borderWidth: 1,
@@ -177,6 +172,50 @@ const initChart = () => {
   }
 
   chart.setOption(option)
+  
+  // 添加图表点击事件
+  chart.on('click', (params) => {
+    if (params.seriesName) {
+      selectedSeries.value = params.seriesName
+      // 通过事件总线通知其他组件
+      emitEvent('select-train-series', params.seriesName)
+    }
+  })
+  
+  // 添加鼠标悬停事件
+  chart.on('mouseover', (params) => {
+    if (params.data && params.data.model) {
+      // 当鼠标悬停在数据点上时，发送车型信息
+      emitEvent('hover-train-model', {
+        model: params.data.model,
+        series: params.seriesName
+      })
+    }
+  })
+  
+  // 添加鼠标移出事件
+  chart.on('mouseout', () => {
+    // 鼠标移出时清除悬停状态
+    emitEvent('hover-train-model', null)
+  })
+  
+  // 添加图例点击事件
+  chart.on('legendselectchanged', (params) => {
+    // 当只有一个系列被选中时，将其设为当前选中系列
+    const selectedCount = Object.values(params.selected).filter(v => v).length
+    if (selectedCount === 1) {
+      const selectedName = Object.keys(params.selected).find(key => params.selected[key])
+      if (selectedName) {
+        selectedSeries.value = selectedName
+        // 通过事件总线通知其他组件
+        emitEvent('select-train-series', selectedName)
+      }
+    } else if (selectedCount === 0 || selectedCount > 1) {
+      // 如果没有系列被选中或多个系列被选中，清除当前选中状态
+      selectedSeries.value = ''
+      emitEvent('select-train-series', '')
+    }
+  })
 }
 
 const handleResize = () => {
@@ -199,6 +238,7 @@ onUnmounted(() => {
   width: 100%;
   height: 600px;
   background: #fff;
+  position: relative;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   padding: 8px;
