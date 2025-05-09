@@ -88,7 +88,7 @@
 
 <script>
 import * as echarts from 'echarts'
-import coordData from '../assets/coord-data.json'
+import coordData from 'assets/coord-data.json'
 
 export default {
   name: 'RailwayMap',

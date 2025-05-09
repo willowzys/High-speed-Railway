@@ -6,7 +6,7 @@
   
   <script>
   import * as echarts from 'echarts'
-  import { railData } from '../assets/mailage'
+  import { railData } from 'assets/mailage'
   
   export default {
     name: 'RailChart',
