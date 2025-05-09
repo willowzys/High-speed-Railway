@@ -128,10 +128,10 @@ export default {
             nodeSeries = 'CRH1系'
           } else if (node.name.includes('CRH2') || node.name.startsWith('CRH2')) {
             nodeSeries = 'CRH2系'
-          } else if (node.name.includes('CRH3') || node.name.startsWith('CRH3')) {
-            nodeSeries = 'CRH3系'
-          } else if (node.name.includes('CRH380') || node.name.startsWith('CRH380')) {
+          }else if (node.name.includes('CRH380') || node.name.startsWith('CRH380')) {
             nodeSeries = 'CRH380系'
+          }  else if (node.name.includes('CRH3') || node.name.startsWith('CRH3')) {
+            nodeSeries = 'CRH3系'
           } else if (node.name.includes('CRH5') || node.name.startsWith('CRH5')) {
             nodeSeries = 'CRH5系'
           } else if (node.name.includes('CRH6') || node.name.startsWith('CRH6')) {

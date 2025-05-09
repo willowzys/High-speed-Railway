@@ -23,7 +23,9 @@ const processData = (data) => {
 
     if (train.model.startsWith('CRH1')) series = 'CRH1系'
     else if (train.model.startsWith('CRH2')) series = 'CRH2系'
+    else if (train.model.startsWith('CRH380')) series = 'CRH380系'
     else if (train.model.startsWith('CRH3')) series = 'CRH3系'
+
     else if (train.model.startsWith('CRH5')) series = 'CRH5系'
     else if (train.model.startsWith('CRH6')) series = 'CRH6系'
     else if (train.model.startsWith('CR300')) series = 'CR300系'
