@@ -66,8 +66,6 @@ body {
 }
 
 .logo-container {
-  position: absolute;
-  left: 5%;
   display: flex;
   align-items: center;
   margin-right: 20px;

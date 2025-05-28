@@ -84,11 +84,22 @@
       </div>
     </div>
   </div>
+
+  <div v-if="connectionDetails" class="connection-info-display">
+    <h3>连线信息</h3>
+    <p>起点: {{ connectionDetails.startCity }}</p>
+    <p>终点: {{ connectionDetails.endCity }}</p>
+    <p>距离: {{ connectionDetails.distance }}</p>
+    <p>通勤时间: {{ connectionDetails.time }}</p>
+    <button @click="clearConnectionInfo">清除连线</button>
+  </div>
 </template>
 
 <script>
 import * as echarts from 'echarts'
 import coordData from 'assets/coord-data.json'
+import cityGeoCoords from '../../dist/assets/cityGeoCoords.json'
+import { tooltipEmits } from 'element-plus'
 
 export default {
   name: 'RailwayMap',
@@ -97,6 +108,9 @@ export default {
       chart: null,
       mapLoaded: false,
       selectedCity: '',
+      selectedProvince: '',
+      currentView: 'china',
+      isZooming: false, // 新增：防止重复点击
       cityOptions: Object.keys(coordData),
       cityStats: {
         hours2: 0,
@@ -104,6 +118,7 @@ export default {
         hours6: 0,
         total: 0
       },
+      
       citiesNames: {
         '2小时': [],
         '4小时': [],
@@ -111,41 +126,72 @@ export default {
       },
       currentMapMode: 'heat', 
       provinceData: [
-        { name: '广东省', value: 3019 },
-        { name: '山东省', value: 2924 },
-        { name: '安徽省', value: 2725 },
-        { name: '江苏省', value: 2547 },
-        { name: '四川省', value: 2497 },
-        { name: '广西壮族自治区', value: 2410 },
-        { name: '江西省', value: 2294 },
-        { name: '湖南省', value: 2291 },
-        { name: '福建省', value: 2251 },
-        { name: '辽宁省', value: 2195 },
-        { name: '浙江省', value: 2188 },
-        { name: '河南省', value: 2162 },
-        { name: '湖北省', value: 2134 },
-        { name: '甘肃省', value: 1854 },
-        { name: '河北省', value: 1852 },
-        { name: '贵州省', value: 1786 },
-        { name: '黑龙江省', value: 1501 },
-        { name: '山西省', value: 1318 },
-        { name: '云南省', value: 1180 },
-        { name: '重庆市', value: 1164 },
-        { name: '陕西省', value: 1019 },
-        { name: '吉林省', value: 855 },
-        { name: '新疆维吾尔自治区', value: 719 },
-        { name: '海南省', value: 653 },
-        { name: '内蒙古自治区', value: 648 },
-        { name: '宁夏回族自治区', value: 458 },
-        { name: '天津市', value: 414 },
-        { name: '北京市', value: 374 },
-        { name: '青海省', value: 268 },
-        { name: '上海市', value: 195 },
-        { name: '西藏自治区', value: 0 },
-        { name: '香港特别行政区', value: null },
-        { name: '澳门特别行政区', value: null },
-        { name: '台湾省', value: null }
+        { name: '广东省', value: 3019, code: '440000' },
+        { name: '山东省', value: 2924, code: '370000' },
+        { name: '安徽省', value: 2725, code: '340000' },
+        { name: '江苏省', value: 2547, code: '320000' },
+        { name: '四川省', value: 2497, code: '510000' },
+        { name: '广西壮族自治区', value: 2410, code: '450000' },
+        { name: '江西省', value: 2294, code: '360000' },
+        { name: '湖南省', value: 2291, code: '430000' },
+        { name: '福建省', value: 2251, code: '350000' },
+        { name: '辽宁省', value: 2195, code: '210000' },
+        { name: '浙江省', value: 2188, code: '330000' },
+        { name: '河南省', value: 2162, code: '410000' },
+        { name: '湖北省', value: 2134, code: '420000' },
+        { name: '甘肃省', value: 1854, code: '620000' },
+        { name: '河北省', value: 1852, code: '130000' },
+        { name: '贵州省', value: 1786, code: '520000' },
+        { name: '黑龙江省', value: 1501, code: '230000' },
+        { name: '山西省', value: 1318, code: '140000' },
+        { name: '云南省', value: 1180, code: '530000' },
+        { name: '重庆市', value: 1164, code: '500000' },
+        { name: '陕西省', value: 1019, code: '610000' },
+        { name: '吉林省', value: 855, code: '220000' },
+        { name: '新疆维吾尔自治区', value: 719, code: '650000' },
+        { name: '海南省', value: 653, code: '460000' },
+        { name: '内蒙古自治区', value: 648, code: '150000' },
+        { name: '宁夏回族自治区', value: 458, code: '640000' },
+        { name: '天津市', value: 414, code: '120000' },
+        { name: '北京市', value: 374, code: '110000' },
+        { name: '青海省', value: 268, code: '630000' },
+        { name: '上海市', value: 195, code: '310000' },
+        { name: '西藏自治区', value: 0, code: '540000' },
+        { name: '香港特别行政区', value: null, code: '810000' }, // 注意：数据源可能有所不同
+        { name: '澳门特别行政区', value: null, code: '820000' }, // 注意：数据源可能有所不同
+        { name: '台湾省', value: null, code: '710000' } // 注意：数据源可能有所不同
       ],
+      provinceCityMap: {
+        '广东省': ['广州市', '深圳市', '珠海市', '汕头市',  '佛山市', '江门市', '湛江市', '茂名市', '肇庆市', '惠州市', '梅州市', '汕尾市', '河源市', '阳江市', '清远市', '东莞市', '中山市', '潮州市', '揭阳市', '云浮市', '韶关市',],
+        '四川省': ['成都市', '绵阳市', '自贡市', '攀枝花市', '泸州市', '德阳市', '广元市', '遂宁市', '内江市', '乐山市', '南充市', '眉山市', '宜宾市', '广安市', '达州市', '雅安市', '巴中市', '资阳市', '阿坝藏族羌族自治州', '甘孜藏族自治州', '凉山彝族自治州'],
+        // ... 其他省份的城市映射
+      },
+
+      selectedCity1: null,
+      cityConnectionsData: {
+        '成都市-绵阳市': { distance: '约120km', time: '约44分钟' },
+        '成都市-乐山市': { distance: '约140km', time: '约1小时' },
+        '成都市-德阳市': { distance: '约65km', time: '约25分钟' },
+        '成都市-眉山市': { distance: '约60km', time: '约31分钟' },
+        '成都市-内江市': { distance: '约150km', time: '约50分钟' },
+        '成都市-广元市': { distance: '约290km', time: '约1小时30分钟' },
+        '成都市-自贡市': { distance: '约150km', time: '约50分钟' },
+        '成都市-宜宾市': { distance: '约200km', time: '约1小时34分钟' },
+        '成都市-南充市': { distance: '约210km', time: '约1小时37分钟' },
+        '成都市-泸州市': { distance: '约230km', time: '约1小时30分钟' },
+        '成都市-广安市': { distance: '约260km', time: '约1小时30分钟' },
+        '成都市-资阳市': { distance: '约60km', time: '约25分钟' },
+        '成都市-巴中市': { distance: '约310km', time: '约1小时30分钟' },
+        '成都市-雅安市': { distance: '约115km', time: '约1小时19分钟' },
+        '成都市-阿坝藏族羌族自治州': { distance: '约300km', time: '暂无数据' },
+        '成都市-甘孜藏族自治州': { distance: '约260km', time: '暂无数据' },
+        '成都市-凉山彝族自治州': { distance: '约436km', time: '约3小时' },
+      },
+      // 用于存储当前绘制的连接线数据
+      currentLineData: [],
+      // 新增：用于显示连接信息的对象
+      connectionDetails: null, // 初始化为 null，表示不显示
+      
       minValue: 0,
       maxValue: 0
     }
@@ -154,7 +200,6 @@ export default {
     this.initChart()
     window.addEventListener('resize', this.resizeChart)
     
-    // Calculate min and max values for the heat map legend
     this.calculateMinMaxValues()
   },
   beforeUnmount() {
@@ -174,32 +219,517 @@ export default {
     },
     
     async initChart() {
-      // 创建ECharts实例
-      this.chart = echarts.init(document.getElementById('railway-map'))
+      console.log('Initializing chart...')
       
-      try {
-        // 异步加载中国地图地理数据
-        const mapData = await fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
-          .then(res => res.json())
+      const chartDom = document.getElementById('railway-map')
+      if (!chartDom) {
+        console.error('Chart container not found!')
+        return
+      }
+      
+      this.chart = echarts.init(chartDom)
+      console.log('Chart instance created')
+
+       try {
+        console.log('Loading China map data...')
+        const response = await fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
+        const mapData = await response.json()
         
-        // 注册地图数据
         echarts.registerMap('china', mapData)
         this.mapLoaded = true
+        console.log('China map data loaded and registered')
         
-        // 根据当前模式显示地图
+        // 先显示地图
         this.switchMapMode()
         
-        // 设置点击事件（仅高铁模式使用）
-        this.chart.on('click', this.handleMapClick)
+        // 使用 nextTick 确保在 Vue 更新周期后绑定事件
+        this.$nextTick(() => {
+          this.bindChartEvents()
+        })
+        
       } catch (error) {
         console.error('Failed to load map data:', error)
       }
     },
+
+    // 独立的事件绑定方法
+    bindChartEvents() {
+      if (!this.chart) {
+        console.warn('Chart not available for event binding')
+        return
+      }
+
+      console.log('Binding click events...')
+
+      // 清除旧的事件监听器
+      this.chart.off('click')
+      this.chart.off('mouseover')
+
+      // 使用箭头函数确保 this 上下文正确
+      this.chart.on('click', (params) => {
+        console.log('=== CHART CLICKED ===')
+        console.log('Params:', params)
+        console.log('Component type:', params.componentType)
+        console.log('Series type:', params.seriesType)
+        console.log('Name:', params.name)
+        console.log('Current mode:', this.currentMapMode)
+        console.log('Current view:', this.currentView)
+
+        // 如果点击的是地图区域 (如省份)
+        if (params.componentType === 'geo' || params.componentType === 'series' && params.seriesType === 'map') {
+          if( this.currentMapMode === 'railway') {
+            return;
+          }
+          console.log('点击了地图区域');
+          this.handleMapClick(params);
+          // 清除连线和已选择的城市
+          this.selectedCity1 = null;
+          this.currentLineData = [];
+          this.chart.setOption({ series: [{ name: '高铁路线', data: [] }] }); // 立即清除线
+        }
+        // 如果点击的是散点 (即城市) 并且当前视图是省份视图 (即已经放大了)
+        else if (params.componentType === 'series' && params.seriesType === 'scatter' && this.currentMapMode === 'heat') {
+          console.log('点击了城市散点:', params.name);
+          this.handleCityScatterClick(params);
+        }
+        else if(params.componentType === 'series' && params.seriesType === 'scatter' && this.currentMapMode === 'railway') {
+          console.log('点击了高铁城市散点:', params.name);
+          this.handleMapClick(params);
+        }
+        else {
+          console.warn('点击了非地图或散点元素:', params);
+        }
+      })
+
+      this.chart.on('mouseover', (params) => {
+        console.log('Mouse over:', params.name, 'Type:', params.componentType)
+      })
+
+      console.log('Event listeners bound successfully')
+    },
+
+    // 处理地图点击事件
+    handleMapClick(params) {
+      if (this.currentMapMode === 'heat' && this.currentView === 'china') {
+        console.log('Attempting to zoom to province:', params.name)
+
+        if (this.isZooming) {
+          console.log('Already zooming, ignoring click')
+          return
+        }
+
+        this.zoomToProvince(params.name)
+      } 
+      else if (this.currentMapMode === 'railway') {
+        console.log('Railway mode click detected')
+          if (params.componentType === 'series' && params.seriesType === 'scatter') {
+            const cityName = params.data.cityName
+            this.selectedCity = cityName
+            this.showRailwayLines(cityName)
+        }
+      }
+
+      this.selectedCity1 = null;
+      this.currentLineData = [];
+      this.connectionDetails = null; // 清除显示的信息
+      this.chart.setOption({ series: [{ name: '高铁路线', data: [] }] }); // 立即清除线
+    },
+    
+    // 放大到省份视图
+    async zoomToProvince(provinceName) {
+      if (this.isZooming) {
+        console.log('Already zooming, returning early')
+        return
+      }
+      
+      this.isZooming = true
+      console.log('Starting zoom to province:', provinceName)
+      
+      try {
+        const province = this.provinceData.find(p => p.name === provinceName)
+        if (!province) {
+          console.error('Province not found:', provinceName)
+          return
+        }
+        
+        if (!province.value) {
+          console.error('Province code not found for:', provinceName)
+          return
+        }
+        
+        console.log('Loading province map data for code:', province.value)
+        
+        const urls = [
+          `https://geo.datav.aliyun.com/areas_v3/bound/${province.code}_full.json`,
+          `https://geo.datav.aliyun.com/areas_v2/bound/${province.code}_full.json`
+        ]
+        
+        let provinceMapData = null
+        let loadSuccess = false
+        
+        for (let url of urls) {
+          try {
+            console.log('Trying URL:', url)
+            const response = await fetch(url, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+              }
+            })
+            
+            if (response.ok) {
+              provinceMapData = await response.json()
+              loadSuccess = true
+              console.log('Province map data loaded successfully from:', url)
+              break
+            }
+          } catch (err) {
+            console.warn('Failed to load from:', url, err.message)
+            continue
+          }
+        }
+        
+        if (!loadSuccess || !provinceMapData) {
+          console.error('All URLs failed, using fallback method')
+          this.showSimplifiedProvinceView(province)
+          return
+        }
+        
+        echarts.registerMap(province.code, provinceMapData)
+        
+        this.selectedProvince = provinceName
+        this.currentView = province.code
+        
+        this.showProvinceMap(province)
+        
+      } catch (error) {
+        console.error('Failed to load province map data:', error)
+        const province = this.provinceData.find(p => p.name === provinceName)
+        if (province) {
+          this.showSimplifiedProvinceView(province)
+        }
+      } finally {
+        this.isZooming = false
+        console.log('Zoom operation completed, isZooming set to false')
+      }
+
+      this.selectedProvince = provinceName;
+      // 当进入省份视图时，重置连线状态和信息
+      this.selectedCity1 = null;
+      this.currentLineData = [];
+      this.connectionDetails = null; // 清除显示的信息
+    },
+    
+    // 显示省份地图
+    showProvinceMap(province) {
+      const cities = this.getProvinceCities(province.name)
+
+      // 重置点击选择和连线数据
+      this.selectedCity1 = null;
+      this.currentLineData = [];
+
+      const option = {
+        backgroundColor: '#ffffff',
+        title: {
+          text: province.name,
+          left: 'center',
+          top: 20,
+          textStyle: {
+            fontSize: 18,
+            fontWeight: 'bold'
+          }
+        },
+        geo: {
+          map: province.code,
+          label: {
+            show: true,
+            fontSize: 10
+          },
+          roam: true,
+          zoom: 1,
+          itemStyle: {
+            areaColor: '#f0f0f0',
+            borderColor: '#999999'
+          },
+          emphasis: {
+            itemStyle: {
+              areaColor: '#e0e0e0'
+            }
+          }
+        },
+        series: [
+          {
+            name: '城市散点',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            symbolSize: 8,
+            data: cities,
+            itemStyle: {
+              color: '#1890ff'
+            },
+            emphasis: {
+              itemStyle: {
+                color: '#ff4a4a'
+              }
+            },
+            label: {
+              show: false,
+              position: 'top',
+              fontSize: 10,
+              formatter: '{b}'
+            },
+             // 添加 tooltip 来显示城市信息
+            tooltip: {
+              formatter: function (params) {
+                  return params.name; // 点击散点时显示城市名称
+              }
+            }
+          },
+          // 新增：用于显示连线的 series
+          {
+            name: '高铁路线',
+            type: 'lines',
+            coordinateSystem: 'geo',
+            zlevel: 2, // 确保线在散点上方
+            effect: {
+              show: true,
+              period: 6, // 箭头流动速度
+              trailLength: 0.7, // 尾巴长度
+              color: '#fff',
+              symbolSize: 3 // 箭头大小
+            },
+            lineStyle: {
+              normal: {
+                color: '#c23531', // 线的颜色
+                width: 2,
+                opacity: 0.6,
+                curveness: 0.2 // 线的弯曲度
+              }
+            },
+            data: this.currentLineData, // 绑定到 currentLineData
+
+            label: { // 保持默认隐藏，或只在强调时显示
+              show: false // 默认不显示，如果需要悬停显示可以设为 true 并调整 formatter
+            },
+            tooltip: {
+            // 配置 tooltip 显示
+            show: true,
+            formatter: function (params) {
+                // params.data 是 currentLineData 里的一个对象
+                // params.data.extra 就是我们存的 connectionInfo
+                if (params.data && params.data.extra) {
+                    const info = params.data.extra;
+                    return `
+                        ${params.seriesName}<br/>
+                        ${params.data.coords[0][0]}, ${params.data.coords[0][1]} - ${params.data.coords[1][0]}, ${params.data.coords[1][1]}<br/>
+                        距离: ${info.distance}<br/>
+                        通勤时间: ${info.time}
+                    `;
+                }
+                return '';
+              }
+            }
+          }
+        ]
+      };
+      this.chart.setOption(option, true)
+
+      this.addBackButton()
+    },
+    
+
+    // 新增：获取省份内的城市数据
+    getProvinceCities(provinceName) {
+      const cityNames = this.provinceCityMap[provinceName] || [];
+      const cities = [];
+
+      console.log('该省份的城市列表:', cityNames);
+
+      cityNames.forEach(cityName => {
+        // 从 cityGeoCoords 中查找城市坐标
+        if (cityGeoCoords[cityName]) { 
+          cities.push({
+            name: cityName,
+            value: cityGeoCoords[cityName] 
+          });
+        } else {
+          console.warn(`警告：城市 '${cityName}' 的地理坐标数据未找到在 cityGeoCoords 中。`);
+        }
+      });
+
+      console.log('最终生成的城市点数据:', cities);
+      return cities;
+    },
+    
+    // 新增：添加返回按钮
+    addBackButton() {
+      // 在图表上添加一个返回按钮
+      const option = this.chart.getOption()
+      option.graphic = [{
+        type: 'group',
+        right: 20,
+        top: 20,
+        children: [{
+          type: 'rect',
+          shape: {
+            width: 60,
+            height: 30
+          },
+          style: {
+            fill: '#1890ff',
+            stroke: '#1890ff'
+          },
+          onclick: () => {
+            this.backToChina()
+          }
+        }, {
+          type: 'text',
+          style: {
+            text: '返回',
+            x: 30,
+            y: 15,
+            textAlign: 'center',
+            textVerticalAlign: 'middle',
+            fill: '#fff',
+            fontSize: 12
+          },
+          onclick: () => {
+            this.backToChina()
+          }
+        }]
+      }]
+      
+      this.chart.setOption(option)
+    },
+    
+    // 新增：返回中国地图
+    backToChina() {
+      this.selectedProvince = ''
+      this.currentView = 'china'
+      this.switchMapMode()
+    },
+
+    // 新增：处理城市散点点击事件
+    handleCityScatterClick(params) {
+      const clickedCityName = params.name;
+      const clickedCityCoords = params.value;
+
+      // 清除上次的显示信息，如果存在的话
+      this.connectionDetails = null; 
+      this.chart.setOption({ series: [{ name: '高铁路线', data: [] }] });
+
+      if (this.selectedProvince !== '四川省') {
+        console.log('当前不在四川省视图，不处理城市连线。');
+        this.selectedCity1 = null;
+        this.currentLineData = [];
+        this.chart.setOption({ series: [{ name: '高铁路线', data: [] }] });
+        return;
+      }
+      
+      if (this.selectedCity1 === null) {
+        // 第一次点击：选中第一个城市
+        this.selectedCity1 = { name: clickedCityName, value: clickedCityCoords };
+        console.log('已选择第一个城市:', this.selectedCity1.name);
+      } else {
+        // 第二次点击：连接两个城市并显示信息
+        if (this.selectedCity1.name === clickedCityName) {
+          console.log('点击了同一个城市，取消选择。');
+          this.selectedCity1 = null;
+          this.currentLineData = [];
+          this.chart.setOption({ series: [{ name: '高铁路线', data: [] }] });
+          return;
+        }
+
+        let startCity = this.selectedCity1.name;
+        let endCity = clickedCityName;
+
+        let connectionKey;
+        if (startCity === '成都市') {
+          connectionKey = `${startCity}-${endCity}`;
+        } else if (endCity === '成都市') {
+          connectionKey = `${endCity}-${startCity}`;
+        } else {
+          
+          console.warn('只能连接成都市与同省份其他城市。');
+          this.selectedCity1 = null;
+          this.currentLineData = [];
+          this.chart.setOption({ series: [{ name: '高铁路线', data: [] }] });
+          return;
+        }
+        
+        const connectionInfo = this.cityConnectionsData[connectionKey];
+
+        if (connectionInfo) {
+          // 绘制连线
+          this.currentLineData = [{
+            coords: [
+              this.selectedCity1.value, // 起点坐标
+              clickedCityCoords // 终点坐标
+            ],
+            // 将连接信息存储在 extra 字段中，供 tooltip formatter 使用
+            extra: connectionInfo
+          }];
+
+          // 更新 ECharts option 来显示连线
+          this.chart.setOption({
+            series: [
+              {
+                name: '高铁路线',
+                data: this.currentLineData,
+                // 确保 label 不显示，因为它不是我们显示信息的方式了
+                label: { show: false } 
+              }
+            ]
+          });
+
+          this.connectionDetails = {
+            startCity: startCity,
+            endCity: endCity,
+            distance: connectionInfo.distance,
+            time: connectionInfo.time
+          };
+
+          console.log(`连接 ${startCity} 和 ${endCity}，距离：${connectionInfo.distance}，通勤时间：${connectionInfo.time}`);
+
+        } else {
+          console.warn(`未找到 ${connectionKey} 的连接数据。`);
+          this.currentLineData = [];
+        }
+
+        // 重置选择，以便下一次点击可以开始新的连线
+        this.selectedCity1 = null;
+      }
+    },
+
+    clearConnectionInfo() {
+      this.selectedCity1 = null;
+      this.currentLineData = [];
+      this.connectionDetails = null;
+      this.chart.setOption({ series: [{ name: '高铁路线', data: [] }] }); // 清除ECharts上的线
+      console.log('连线信息已清除。');
+    },
+    
+    // switchMapMode() {
+    //   if (!this.mapLoaded) return
+      
+    //   if (this.currentView !== 'china') {
+    //     // 如果当前在省份视图，先返回中国地图
+    //     this.backToChina()
+    //     return
+    //   }
+      
+    //   if (this.currentMapMode === 'railway') {
+    //     this.showRailwayMap()
+    //   } else if (this.currentMapMode === 'heat') {
+    //     this.showHeatMap()
+    //   }
+    // },
     
     switchMapMode() {
       if (!this.mapLoaded) return
       
       if (this.currentMapMode === 'railway') {
+        this.connectionDetails = null; // 清除显示的信息
         this.showRailwayMap()
       } else if (this.currentMapMode === 'heat') {
         this.showHeatMap()
@@ -370,16 +900,16 @@ export default {
       }).filter(item => item.value && item.value.length === 2)
     },
     
-    handleMapClick(params) {
-      // 只在高铁模式下响应点击事件
-      if (this.currentMapMode !== 'railway') return
+    // handleMapClick(params) {
+    //   // 只在高铁模式下响应点击事件
+    //   if (this.currentMapMode !== 'railway') return
       
-      if (params.componentType === 'series' && params.seriesType === 'scatter') {
-        const cityName = params.data.cityName
-        this.selectedCity = cityName
-        this.showRailwayLines(cityName)
-      }
-    },
+    //   if (params.componentType === 'series' && params.seriesType === 'scatter') {
+    //     const cityName = params.data.cityName
+    //     this.selectedCity = cityName
+    //     this.showRailwayLines(cityName)
+    //   }
+    // },
     
     handleCitySelect() {
       // 只在高铁模式下响应选择事件
@@ -673,6 +1203,49 @@ export default {
 </script>
 
 <style scoped>
+
+/* 新增：信息显示区域的样式 (可根据需要调整) */
+.connection-info-display {
+  position: absolute; /* 相对于父容器定位，如果父容器是相对定位 */
+  top: 100px; /* 调整位置 */
+  right: 120px; /* 调整位置 */
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100; /* 确保它在地图上方 */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+.connection-info-display h3 {
+  margin-top: 0;
+  color: #0056b3;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.connection-info-display p {
+  margin: 5px 0;
+}
+
+.connection-info-display button {
+  margin-top: 15px;
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.connection-info-display button:hover {
+  background-color: #0056b3;
+}
+
 /*地图部分容器*/
 .railway-map-container {
   width: 100%;

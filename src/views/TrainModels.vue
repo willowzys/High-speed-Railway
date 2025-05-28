@@ -1,27 +1,42 @@
 <template>
   <div class="train-models">
     <!-- 顶部概览区域 -->
-     
-    <el-row :gutter="20">
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+    
+    <el-row :gutter="20" class="section-margin">
+      <el-col :span="24">
+        <el-card class="chart-card">
+          <!-- <template #header> -->
+            <!-- <div class="card-header">
+              <span class="card-title">中国高铁总里程增长数据</span>
+            </div> -->
+          <!-- </template> -->
+          <RailChart />
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="20" class="section-margin">
+      <el-col :span="24">
         <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span class="card-title">各身份高铁里程热力图和可达性分析</span>
+              <span class="card-title">高铁竞争力分析</span>
+            </div>
+          </template>
+          <TransportationChart />
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="20" class="section-margin">
+      <el-col :span="24">
+        <el-card class="chart-card">
+          <template #header>
+            <div class="card-header">
+              <span class="card-title">各省份高铁里程热力图和可达性分析</span>
             </div>
           </template>
           <RailwayMap />
-        </el-card>
-      </el-col>
-
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-        <el-card class="chart-card">
-          <template #header>
-            <div class="card-header">
-              <span class="card-title">中国高铁总里程增长数据</span>
-            </div>
-          </template>
-          <RailChart />
         </el-card>
       </el-col>
     </el-row>
@@ -51,18 +66,7 @@
     </el-row>
 
     <!-- 中部分析区域 -->
-    <el-row :gutter="20" class="section-margin">
-      <el-col :span="24">
-        <el-card class="chart-card highlight-card">
-          <template #header>
-            <div class="card-header">
-              <span class="card-title">中国高铁竞争力分析</span>
-            </div>
-          </template>
-          <TransportationChart />
-        </el-card>
-      </el-col>
-    </el-row>
+  
     
     <!-- 底部详细信息区域 -->
     <el-row :gutter="20" class="section-margin">
@@ -163,12 +167,12 @@ const trainData = ref(trainModelsData.map(train => ({
   justify-content: center;
   align-items: center;
   position: relative;
-  padding: 10px 15px;
+  /* padding: 10px 15px; */
   border-radius: 8px 8px 0 0;
 }
 
 .card-title {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold;
   color: #303133;
   text-align: center;
@@ -184,7 +188,7 @@ const trainData = ref(trainModelsData.map(train => ({
 }
 
 .chart-card {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   height: 100%;
   border-radius: 12px;
   overflow: hidden;
@@ -197,9 +201,9 @@ const trainData = ref(trainModelsData.map(train => ({
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
 }
 
-.highlight-card {
+/* .highlight-card {
   border-left: 6px solid #3498db;
-}
+} */
 
 .section-margin {
   margin-top: 30px;

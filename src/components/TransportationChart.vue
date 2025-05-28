@@ -1,6 +1,6 @@
 <template>
   <div class="transportation-chart-container">
-    <h2>中国主要交通方式数据可视化 (2019-2024)</h2>
+    <!-- <h2>中国主要交通方式数据可视化 (2019-2024)</h2> -->
     <div ref="chartRef" class="chart-main"></div>
   </div>
 </template>
@@ -298,7 +298,7 @@ const chartOptions = computed(() => ({
   dataZoom: [ // 添加缩放/漫游组件
     {
       type: 'slider', // 底部滑动条
-      show: true,
+      show: false,
       xAxisIndex: [0],
       start: 0,
       end: 100
