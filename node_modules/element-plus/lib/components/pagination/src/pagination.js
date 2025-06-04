@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var vue = require('vue');
 var iconsVue = require('@element-plus/icons-vue');
 var constants = require('./constants.js');
-var prev = require('./components/prev2.js');
+var prev = require('./components/prev.js');
 var next = require('./components/next2.js');
 var sizes = require('./components/sizes2.js');
 var jumper = require('./components/jumper2.js');

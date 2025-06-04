@@ -14,7 +14,6 @@ export declare const useStyles: (props: TableV2Props, { columnsTotalWidth, rowsH
     mainTableHeight: ComputedRef<number>;
     leftTableWidth: ComputedRef<number>;
     rightTableWidth: ComputedRef<number>;
-    headerWidth: ComputedRef<number>;
     windowHeight: ComputedRef<number>;
     footerHeight: ComputedRef<CSSProperties>;
     emptyStyle: ComputedRef<CSSProperties>;

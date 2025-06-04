@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var tooltip$1 = require('./src/tooltip2.js');
 var tooltip = require('./src/tooltip.js');
-var trigger = require('./src/trigger.js');
+var trigger = require('./src/trigger2.js');
 var content = require('./src/content.js');
 var constants = require('./src/constants.js');
 var install = require('../../utils/vue/install.js');

@@ -1,5 +1,5 @@
+import { type Nullable } from 'element-plus/es/utils';
 import Node from './node';
-import type { Nullable } from 'element-plus/es/utils';
 import type { CascaderConfig, CascaderNodePathValue, CascaderNodeValue, CascaderOption } from './node';
 export default class Store {
     readonly config: CascaderConfig;

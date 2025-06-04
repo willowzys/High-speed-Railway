@@ -52,7 +52,6 @@ const TableV2 = vue.defineComponent({
       bodyWidth,
       emptyStyle,
       rootStyle,
-      headerWidth,
       footerHeight,
       showEmpty,
       scrollTo,
@@ -112,9 +111,9 @@ const TableV2 = vue.defineComponent({
         data: _data,
         fixedData,
         estimatedRowHeight,
-        bodyWidth: vue.unref(bodyWidth) + vScrollbarSize,
+        bodyWidth: vue.unref(bodyWidth),
         headerHeight,
-        headerWidth: vue.unref(headerWidth),
+        headerWidth: vue.unref(bodyWidth),
         height: vue.unref(mainTableHeight),
         mainTableRef,
         rowKey,
@@ -153,7 +152,6 @@ const TableV2 = vue.defineComponent({
         onScroll: onVerticalScroll
       };
       const rightColumnsWidth = vue.unref(rightTableWidth);
-      const rightColumnsWidthWithScrollbar = rightColumnsWidth + vScrollbarSize;
       const rightTableProps = {
         cache,
         class: ns.e("right"),
@@ -163,15 +161,15 @@ const TableV2 = vue.defineComponent({
         estimatedRowHeight,
         rightTableRef,
         rowHeight,
-        bodyWidth: rightColumnsWidthWithScrollbar,
-        headerWidth: rightColumnsWidthWithScrollbar,
+        bodyWidth: rightColumnsWidth,
+        headerWidth: rightColumnsWidth,
         headerHeight,
         height: _fixedTableHeight,
         rowKey,
         scrollbarAlwaysOn,
         scrollbarStartGap: 2,
         scrollbarEndGap: vScrollbarSize,
-        width: rightColumnsWidthWithScrollbar,
+        width: rightColumnsWidth,
         style: `--${vue.unref(ns.namespace)}-table-scrollbar-size: ${vScrollbarSize}px`,
         useIsScrolling,
         getRowHeight,
