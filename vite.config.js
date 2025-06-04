@@ -15,7 +15,9 @@ export default defineConfig({
     open: true
   },
   // base:'./',
-  base: '/high-speed-rail/',
+  base: process.env.NODE_ENV === 'production'
+    ? '/High-speed-Railway/' // 生产环境（部署到GitHub Pages）使用仓库名
+    : '/', // 开发环境使用根路径
   build:{
     outDir:'dist'
   }
