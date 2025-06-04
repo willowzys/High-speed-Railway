@@ -25,7 +25,7 @@
 
 <style>
 body {
-  background-color: #f0f2f5;
+  background-color: #eb7814;
   font-family: 'Arial', 'Microsoft YaHei', sans-serif;
   margin: 0;
   padding: 0;
@@ -38,13 +38,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e6e9f0 100%);
-}
-
-.el-container {
-  height: 100%;
-  width: 100%;
-  max-width: 100%;
+  background: linear-gradient(135deg, #0fc85c 0%, #e6e9f0 100%);
 }
 
 .nav-menu {
@@ -65,18 +59,6 @@ body {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
-}
-
-.logo {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
-  transition: transform 0.3s ease;
-}
 
 .logo:hover {
   transform: rotate(360deg);
@@ -87,51 +69,8 @@ body {
   align-items: center;
 }
 
-.site-title {
-  font-size: 22px;
-  font-weight: 600;
-  color: #2c3e50;
-  letter-spacing: 1px;
-  transition: color 0.3s ease;
-  margin: 0;
-  text-align: left;
-}
-
 .site-title:hover {
   color: #3498db;
-}
-
-.nav-links {
-  margin-left: auto;
-}
-
-.el-main {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  overflow-x: hidden;
-}
-
-@media (max-width: 768px) {
-  .nav-menu {
-    flex-direction: column;
-    padding: 10px;
-  }
-  
-  .logo-container, .title-container, .nav-links {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  
-  .site-title {
-    font-size: 18px;
-  }
-  
-  .logo {
-    width: 30px;
-    height: 30px;
-  }
 }
 
 @media (min-width: 1920px) {
@@ -175,19 +114,13 @@ body {
 }
 
 .el-main {
-  padding: 20px;
-  background: transparent;
-}
-
-.el-main {
-  padding: 20px;
-  background-color: #f5f7fa;
+  /* padding: 20px;
+  margin: 0; */
   width: 100%;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 0;
+  height: 100%;
+  max-width: 100%;
+  /* box-sizing: border-box;
+  overflow-x: hidden; */
+  background-color: #185fca; /* 或根据需求选择合适的背景色 */
 }
 </style>
