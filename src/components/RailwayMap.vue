@@ -98,7 +98,7 @@
 <script>
 import * as echarts from 'echarts'
 import coordData from 'assets/coord-data.json'
-import cityGeoCoords from '../../public/assets/cityGeoCoords.json'
+import cityGeoCoords from 'assets/cityGeoCoords.json'
 import { tooltipEmits } from 'element-plus'
 
 export default {
