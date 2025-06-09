@@ -8,14 +8,14 @@
             <option value="">请选择城市</option>
             <option v-for="city in cityOptions" :key="city" :value="city">{{ city }}</option>
           </select>
-          <button class="reset-btn" @click="resetView">重置地图</button>
+          <!-- <button class="reset-btn" @click="resetView">重置地图</button> -->
         </div>
         
         <div class="map-mode-selector">
           <label for="map-mode">地图模式：</label>
           <select id="map-mode" v-model="currentMapMode" @change="switchMapMode">
-            <option value="railway">高铁城市圈</option>
             <option value="heat">省份热力图</option>
+            <option value="railway">高铁城市圈</option>
           </select>
         </div>
       </div>
@@ -99,7 +99,6 @@
 import * as echarts from 'echarts'
 import coordData from 'assets/coord-data.json'
 import cityGeoCoords from 'assets/cityGeoCoords.json'
-import { tooltipEmits } from 'element-plus'
 
 export default {
   name: 'RailwayMap',
@@ -295,6 +294,7 @@ export default {
         else if(params.componentType === 'series' && params.seriesType === 'scatter' && this.currentMapMode === 'railway') {
           console.log('点击了高铁城市散点:', params.name);
           this.handleMapClick(params);
+          this.showRailwayLines(params.name);
         }
         else {
           console.warn('点击了非地图或散点元素:', params);
@@ -322,11 +322,6 @@ export default {
       } 
       else if (this.currentMapMode === 'railway') {
         console.log('Railway mode click detected')
-          if (params.componentType === 'series' && params.seriesType === 'scatter') {
-            const cityName = params.data.cityName
-            this.selectedCity = cityName
-            this.showRailwayLines(cityName)
-        }
       }
 
       this.selectedCity1 = null;
@@ -611,6 +606,7 @@ export default {
 
     // 新增：处理城市散点点击事件
     handleCityScatterClick(params) {
+      console.log('DEBUG: 进入 handleCityScatterClick()。');
       const clickedCityName = params.name;
       const clickedCityCoords = params.value;
 
@@ -666,7 +662,6 @@ export default {
               this.selectedCity1.value, // 起点坐标
               clickedCityCoords // 终点坐标
             ],
-            // 将连接信息存储在 extra 字段中，供 tooltip formatter 使用
             extra: connectionInfo
           }];
 
@@ -680,7 +675,7 @@ export default {
                 label: { show: false } 
               }
             ]
-          });
+          }, false);
 
           this.connectionDetails = {
             startCity: startCity,
@@ -709,22 +704,6 @@ export default {
       console.log('连线信息已清除。');
     },
     
-    // switchMapMode() {
-    //   if (!this.mapLoaded) return
-      
-    //   if (this.currentView !== 'china') {
-    //     // 如果当前在省份视图，先返回中国地图
-    //     this.backToChina()
-    //     return
-    //   }
-      
-    //   if (this.currentMapMode === 'railway') {
-    //     this.showRailwayMap()
-    //   } else if (this.currentMapMode === 'heat') {
-    //     this.showHeatMap()
-    //   }
-    // },
-    
     switchMapMode() {
       if (!this.mapLoaded) return
       
@@ -738,6 +717,11 @@ export default {
     
     showRailwayMap() {
       // 设置高铁地图的基本配置
+      console.log('DEBUG: 进入 showRailwayMap()。当前模式:', this.currentMapMode);
+
+      const initialCityPoints = this.getCityPoints(); // 获取初始城市点
+      console.log('DEBUG: showRailwayMap() 中 scatter 系列的 data 数量:', initialCityPoints.length);
+
       const option = {
         backgroundColor: '#ffffff',
         tooltip: {
@@ -770,7 +754,7 @@ export default {
             type: 'scatter',
             coordinateSystem: 'geo',
             symbolSize: 10,
-            data: this.getCityPoints(),
+            data: initialCityPoints,
             itemStyle: {
               color: '#1890ff'
             },
@@ -778,18 +762,13 @@ export default {
               itemStyle: {
                 color: '#ff4a4a'
               }
-            }
+            },
           }
         ]
       }
       
-      // 应用配置
       this.chart.setOption(option, true)
-      
-      // 如果之前选中了城市，重新显示连接线
-      if (this.selectedCity) {
-        this.showRailwayLines(this.selectedCity)
-      }
+      console.log('DEBUG: showRailwayMap() setOption 完成。');
     },
     
     showHeatMap() {
@@ -900,17 +879,6 @@ export default {
       }).filter(item => item.value && item.value.length === 2)
     },
     
-    // handleMapClick(params) {
-    //   // 只在高铁模式下响应点击事件
-    //   if (this.currentMapMode !== 'railway') return
-      
-    //   if (params.componentType === 'series' && params.seriesType === 'scatter') {
-    //     const cityName = params.data.cityName
-    //     this.selectedCity = cityName
-    //     this.showRailwayLines(cityName)
-    //   }
-    // },
-    
     handleCitySelect() {
       // 只在高铁模式下响应选择事件
       if (this.currentMapMode !== 'railway') {
@@ -921,8 +889,6 @@ export default {
       if (this.selectedCity) {
         this.showRailwayLines(this.selectedCity)
       } else {
-        // 重置图表
-        this.resetMap()
         this.cityStats = {
           hours2: 0,
           hours4: 0,
@@ -934,31 +900,6 @@ export default {
           '4小时': [],
           '6小时': []
         }
-      }
-    },
-    
-    resetMap() {
-      if (!this.chart || !this.mapLoaded) return
-      
-      if (this.currentMapMode === 'railway') {
-        this.chart.setOption({
-          series: [
-            {
-              type: 'scatter',
-              coordinateSystem: 'geo',
-              symbolSize: 10,
-              data: this.getCityPoints(),
-              itemStyle: {
-                color: '#1890ff'
-              },
-              emphasis: {
-                itemStyle: {
-                  color: '#ff4a4a'
-                }
-              }
-            }
-          ]
-        })
       }
     },
     
@@ -1002,24 +943,9 @@ export default {
     showRailwayLines(cityName) {
       if (!this.mapLoaded || !coordData[cityName]) return
       
-      // 确保当前是高铁模式
-      if (this.currentMapMode !== 'railway') {
-        this.currentMapMode = 'railway'
-        this.switchMapMode()
-        // 稍等一下确保模式切换完成
-        setTimeout(() => {
-          this.showRailwayLines(cityName)
-        }, 100)
-        return
-      }
-      
-      // 清除之前的数据
       this.selectedCity = cityName
-      
-      // 更新城市统计数据
       this.updateCityStats(cityName)
       
-      // 获取选中城市的坐标
       let sourceCoord
       const cityPoints = this.getCityPoints()
       const sourceCity = cityPoints.find(city => city.cityName === cityName)
@@ -1031,7 +957,6 @@ export default {
         return
       }
       
-      // 准备线数据
       const linesData = {
         '2小时': [],
         '4小时': [],
@@ -1173,47 +1098,32 @@ export default {
       }
     },
     
-    resetView() {
-      this.selectedCity = '';
-      this.resetMap();
-      this.cityStats = {
-        hours2: 0,
-        hours4: 0,
-        hours6: 0,
-        total: 0
-      };
-      this.citiesNames = {
-        '2小时': [],
-        '4小时': [],
-        '6小时': []
-      };
-      
-      // 重置地图视图到初始状态
-      if (this.chart && this.mapLoaded) {
-        this.chart.setOption({
-          geo: {
-            zoom: 1.2,
-            center: [104.5, 36]
-          }
-        });
-      }
-    }
+    // resetView() {
+    //   this.selectedCity = '';
+    //   this.cityStats = { hours2: 0, hours4: 0, hours6: 0, total: 0 };
+    //   this.citiesNames = { '2小时': [], '4小时': [], '6小时': [] };
+
+    //   if (this.chart && this.mapLoaded) {
+    //     this.chart.clear(); 
+    //     this.initChart();   
+    //   }
+    // }
   }
 }
 </script>
 
 <style scoped>
 
-/* 新增：信息显示区域的样式 (可根据需要调整) */
+
 .connection-info-display {
-  position: absolute; /* 相对于父容器定位，如果父容器是相对定位 */
-  top: 100px; /* 调整位置 */
-  right: 120px; /* 调整位置 */
+  position: absolute;
+  top: 100px; 
+  right: 120px; 
   background: rgba(255, 255, 255, 0.9);
   padding: 15px 20px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 100; /* 确保它在地图上方 */
+  z-index: 100; 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   line-height: 1.6;
@@ -1337,30 +1247,6 @@ export default {
   height: 10px;
   margin-right: 8px;
 }
-
-/* .heat-legend {
-  width: 200px;
-}
-
-.legend-title {
-  margin: 0 0 8px 0;
-  font-weight: bold;
-  text-align: center;
-}
-
-.color-gradient {
-  height: 10px;
-  width: 100%;
-  background: linear-gradient(to right, #f7fbff, #deebf7, #c6dbef, #9ecae1, #6baed6, #4292c6, #2171b5, #08519c, #08306b);
-  margin-bottom: 5px;
-} */
-
-/* .gradient-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: #666;
-} */
 
 /*城市统计部分*/
 .city-stats-wrapper {

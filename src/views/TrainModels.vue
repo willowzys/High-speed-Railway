@@ -102,7 +102,7 @@ const trainData = ref(trainModelsData.map(train => ({
 </script>
 
 <style scoped>
-.train-models {
+/* .train-models {
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -112,33 +112,7 @@ const trainData = ref(trainModelsData.map(train => ({
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-@media (min-width: 1200px) {
-  .train-models {
-    max-width: 100%;
-    margin: 0;
-    padding: 20px;
-    gap: 30px;
-  }
-}
-
-@media (min-width: 1600px) {
-  .train-models {
-    max-width: 100%;
-    padding: 30px;
-    gap: 40px;
-  }
-}
-
-@media (min-width: 1920px) {
-  .train-models {
-    max-width: 1920px;
-    margin: 0 auto;
-    padding: 40px;
-    gap: 50px;
-  }
-}
+} */
 
 .el-row {
   width: 100%;
@@ -146,21 +120,10 @@ const trainData = ref(trainModelsData.map(train => ({
 }
 
 .el-col {
-  padding: 10px;
+  padding: 15px;
   box-sizing: border-box;
 }
 
-/* 响应式调整 */
-@media (max-width: 768px) {
-  .train-models {
-    padding: 5px;
-    gap: 10px;
-  }
-  
-  .el-col {
-    padding: 5px;
-  }
-}
 
 .card-header {
   display: flex;
@@ -179,26 +142,23 @@ const trainData = ref(trainModelsData.map(train => ({
   margin: 0 auto;
 }
 
-@media (max-width: 768px) {
-  .card-title {
-    font-size: 16px;
-    color: #2c3e50;
-    letter-spacing: 1px;
-  }
-}
 
 .chart-card {
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   height: 100%;
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 20px rgba(16, 197, 82, 0.08);
 }
 
 .chart-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 15px 30px rgba(214, 22, 22, 0.12);
+}
+
+.chart-card:hover::before {
+  opacity: 1;
 }
 
 /* .highlight-card {
@@ -224,9 +184,6 @@ const trainData = ref(trainModelsData.map(train => ({
   z-index: 1;
 }
 
-.chart-card:hover::before {
-  opacity: 1;
-}
 
 /* 响应式调整 */
 @media (max-width: 768px) {

@@ -25,7 +25,7 @@
 
 <style>
 body {
-  background-color: #eb7814;
+  background-color: #959290;
   font-family: 'Arial', 'Microsoft YaHei', sans-serif;
   margin: 0;
   padding: 0;
@@ -38,7 +38,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: linear-gradient(135deg, #0fc85c 0%, #e6e9f0 100%);
+  background: linear-gradient(135deg, #1d4870 0%, #e6e9f0 100%);
 }
 
 .nav-menu {
@@ -59,6 +59,19 @@ body {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+  transition: transform 0.5s ease;
+  cursor: pointer;
+}
 
 .logo:hover {
   transform: rotate(360deg);
@@ -69,9 +82,6 @@ body {
   align-items: center;
 }
 
-.site-title:hover {
-  color: #3498db;
-}
 
 @media (min-width: 1920px) {
   .nav-menu {
@@ -79,21 +89,6 @@ body {
   }
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  width: 50px;
-  height: 50px;
-  margin-right: 15px;
-}
-
-.title-container {
-  flex-grow: 1;
-  text-align: center;
-}
 
 .site-title {
   font-size: 24px;
@@ -101,6 +96,10 @@ body {
   color: #303133;
   margin: 0;
   letter-spacing: 2px;
+}
+
+.site-title:hover {
+  color: #3498db;
 }
 
 .nav-links {
@@ -113,14 +112,5 @@ body {
   background-color: transparent;
 }
 
-.el-main {
-  /* padding: 20px;
-  margin: 0; */
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  /* box-sizing: border-box;
-  overflow-x: hidden; */
-  background-color: #185fca; /* 或根据需求选择合适的背景色 */
-}
+
 </style>
