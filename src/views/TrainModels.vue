@@ -4,12 +4,7 @@
     
     <el-row :gutter="20" class="section-margin">
       <el-col :span="24">
-        <el-card class="chart-card">
-          <!-- <template #header> -->
-            <!-- <div class="card-header">
-              <span class="card-title">中国高铁总里程增长数据</span>
-            </div> -->
-          <!-- </template> -->
+        <el-card class="chart-card1">
           <RailChart />
         </el-card>
       </el-col>
@@ -65,10 +60,6 @@
       </el-col>
     </el-row>
 
-    <!-- 中部分析区域 -->
-  
-    
-    <!-- 底部详细信息区域 -->
     <el-row :gutter="20" class="section-margin">
       <el-col :span="24">
         <el-card class="chart-card">
@@ -102,18 +93,6 @@ const trainData = ref(trainModelsData.map(train => ({
 </script>
 
 <style scoped>
-/* .train-models {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 10px;
-  box-sizing: border-box;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e6e9f0 100%);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-} */
-
 .el-row {
   width: 100%;
   margin: 0 !important;
@@ -130,7 +109,6 @@ const trainData = ref(trainModelsData.map(train => ({
   justify-content: center;
   align-items: center;
   position: relative;
-  /* padding: 10px 15px; */
   border-radius: 8px 8px 0 0;
 }
 
@@ -142,6 +120,14 @@ const trainData = ref(trainModelsData.map(train => ({
   margin: 0 auto;
 }
 
+.chart-card1 {
+  margin-bottom: 3px;
+  height: 730px;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 10px 20px rgba(16, 197, 82, 0.08);
+}
 
 .chart-card {
   margin-bottom: 3px;
@@ -157,33 +143,10 @@ const trainData = ref(trainModelsData.map(train => ({
   box-shadow: 0 15px 30px rgba(214, 22, 22, 0.12);
 }
 
-.chart-card:hover::before {
-  opacity: 1;
-}
-
-/* .highlight-card {
-  border-left: 6px solid #3498db;
-} */
 
 .section-margin {
   margin-top: 30px;
 }
-
-/* 科技感卡片背景 */
-.chart-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-  z-index: 1;
-}
-
 
 /* 响应式调整 */
 @media (max-width: 768px) {
