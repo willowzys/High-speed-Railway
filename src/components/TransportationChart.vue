@@ -341,9 +341,6 @@ onBeforeUnmount(() => {
 watch(chartOptions, (newOptions) => {
   chartInstance?.setOption(newOptions);
 });
-
-
-
 </script>
 
 <style scoped>
@@ -362,11 +359,11 @@ h2 {
 
 .chart-main {
   width: 100%;
-  height: 550px; /* 增加高度以容纳 Y 轴和图例 */
-  min-height: 400px; /* 最小高度 */
+  height: 670px; /* 增加高度以容纳 Y 轴和图例 */
   background-color: #fff;
   border-radius: 4px;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid #eb1a1a;
 }
 
 .annotations {
