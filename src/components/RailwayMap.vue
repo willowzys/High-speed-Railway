@@ -231,7 +231,9 @@ export default {
 
        try {
         console.log('Loading China map data...')
-        const response = await fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
+        const basePath = import.meta.env.BASE_URL;
+        const response = await fetch(`${basePath}assets/China.json`);
+        
         const mapData = await response.json()
         
         echarts.registerMap('china', mapData)
@@ -331,6 +333,7 @@ export default {
     },
     
     // 放大到省份视图
+
     async zoomToProvince(provinceName) {
       if (this.isZooming) {
         console.log('Already zooming, returning early')
@@ -354,38 +357,35 @@ export default {
         
         console.log('Loading province map data for code:', province.value)
         
-        const urls = [
-          `https://geo.datav.aliyun.com/areas_v3/bound/${province.code}_full.json`,
-          `https://geo.datav.aliyun.com/areas_v2/bound/${province.code}_full.json`
-        ]
+        // 仅使用本地路径（public/assets/provinces/目录下的JSON文件）
+        const baseUrl = import.meta.env.BASE_URL;
+        const localUrl = `${baseUrl}assets/provinces/${province.code}_full.json`;
         
         let provinceMapData = null
         let loadSuccess = false
         
-        for (let url of urls) {
-          try {
-            console.log('Trying URL:', url)
-            const response = await fetch(url, {
-              method: 'GET',
-              headers: {
-                'Accept': 'application/json',
-              }
-            })
-            
-            if (response.ok) {
-              provinceMapData = await response.json()
-              loadSuccess = true
-              console.log('Province map data loaded successfully from:', url)
-              break
+        try {
+          console.log('Trying local URL:', localUrl)
+          const response = await fetch(localUrl, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
             }
-          } catch (err) {
-            console.warn('Failed to load from:', url, err.message)
-            continue
+          })
+          
+          if (response.ok) {
+            provinceMapData = await response.json()
+            loadSuccess = true
+            console.log('Province map data loaded successfully from local:', localUrl)
+          } else {
+            console.error('Local map data request failed with status:', response.status)
           }
+        } catch (err) {
+          console.error('Error loading local province map data:', err.message)
         }
         
         if (!loadSuccess || !provinceMapData) {
-          console.error('All URLs failed, using fallback method')
+          console.error('Local map data load failed, using fallback view')
           this.showSimplifiedProvinceView(province)
           return
         }
@@ -398,7 +398,7 @@ export default {
         this.showProvinceMap(province)
         
       } catch (error) {
-        console.error('Failed to load province map data:', error)
+        console.error('Failed to process province map data:', error)
         const province = this.provinceData.find(p => p.name === provinceName)
         if (province) {
           this.showSimplifiedProvinceView(province)
@@ -703,7 +703,7 @@ export default {
       this.chart.setOption({ series: [{ name: '高铁路线', data: [] }] }); // 清除ECharts上的线
       console.log('连线信息已清除。');
     },
-    
+        
     switchMapMode() {
       if (!this.mapLoaded) return
       
@@ -734,7 +734,7 @@ export default {
             show: false
           },
           roam: true,
-          zoom: 1.2,
+          zoom: 1.4,
           center: [104.5, 36],
           itemStyle: {
             areaColor: '#e0e0e0',
@@ -802,7 +802,7 @@ export default {
             show: false
           },
           roam: true,
-          zoom: 1.2,
+          zoom: 1.4,
           center: [104.5, 36],
           itemStyle: {
             areaColor: '#e0e0e0',
@@ -878,7 +878,7 @@ export default {
         }
       }).filter(item => item.value && item.value.length === 2)
     },
-    
+        
     handleCitySelect() {
       // 只在高铁模式下响应选择事件
       if (this.currentMapMode !== 'railway') {
@@ -902,7 +902,7 @@ export default {
         }
       }
     },
-    
+        
     updateCityStats(cityName) {
       if (!coordData[cityName]) {
         this.cityStats = {
@@ -945,7 +945,6 @@ export default {
       
       this.selectedCity = cityName
       this.updateCityStats(cityName)
-      
       let sourceCoord
       const cityPoints = this.getCityPoints()
       const sourceCity = cityPoints.find(city => city.cityName === cityName)
@@ -957,7 +956,7 @@ export default {
         return
       }
       
-      const linesData = {
+        const linesData = {
         '2小时': [],
         '4小时': [],
         '6小时': []
@@ -1102,7 +1101,7 @@ export default {
     //   this.selectedCity = '';
     //   this.cityStats = { hours2: 0, hours4: 0, hours6: 0, total: 0 };
     //   this.citiesNames = { '2小时': [], '4小时': [], '6小时': [] };
-
+      
     //   if (this.chart && this.mapLoaded) {
     //     this.chart.clear(); 
     //     this.initChart();   
@@ -1117,13 +1116,13 @@ export default {
 
 .connection-info-display {
   position: absolute;
-  top: 100px; 
-  right: 120px; 
+  top: 100px;
+  right: 120px;
   background: rgba(255, 255, 255, 0.9);
   padding: 15px 20px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 100; 
+  z-index: 100;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   line-height: 1.6;
@@ -1159,7 +1158,7 @@ export default {
 /*地图部分容器*/
 .railway-map-container {
   width: 100%;
-  height: 600px;
+  height: 670px;
   position: relative;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
   border-radius: 8px;
